@@ -101,6 +101,75 @@ h1 {
     border: 1px solid rgba(255, 255, 255, .1);
     box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
     transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+    animation: cardIn .4s ease both;
+}
+
+/* Card Composto para UniTV */
+.button-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+    animation: cardIn .4s ease both;
+}
+
+.unitv-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.unitv-title i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .2);
+    border: 1px solid rgba(255, 255, 255, .1);
+    font-size: 16px;
+}
+
+.unitv-title strong {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.unitv-links {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-sublink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, .25);
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: transform .2s ease, background .2s ease;
+}
+
+.btn-sublink:hover {
+    background: rgba(255, 255, 255, .2);
+    transform: translateY(-2px);
+}
+
+.btn-sublink:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff;
 }
 
 /* Gradientes dos Botões */
@@ -109,7 +178,7 @@ h1 {
 .btn-dark   { background: linear-gradient(135deg, #27303d, #121720); }
 .btn-red    { background: linear-gradient(135deg, #f13339, #b30e19); }
 .btn-indigo { background: linear-gradient(135deg, #5365dc, #303e9d); }
-.btn- { background: linear-gradient(135deg, #ff8b19, #dc5900); }
+.btn-orange { background: linear-gradient(135deg, #ff8b19, #dc5900); }
 .btn-yellow { background: linear-gradient(135deg, #f5a000, #c87a00); }
 .btn-green  { background: linear-gradient(135deg, #10b981, #047857); }
 
@@ -195,10 +264,6 @@ footer a:hover {
     50% { transform: translateY(-4px); }
 }
 
-.button {
-    animation: cardIn .4s ease both;
-}
-
 @keyframes cardIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -208,7 +273,7 @@ footer a:hover {
 @media(max-width: 600px) {
     body { padding: 20px 12px; }
     .buttons-grid { grid-template-columns: 1fr; gap: 12px; }
-    .button { min-height: 72px; padding: 12px 14px; }
+    .button, .button-group { min-height: 72px; padding: 12px 14px; }
 }
 
 @media(min-width: 601px) and (max-width: 900px) {
@@ -251,7 +316,7 @@ footer a:hover {
         </span>
     </a>
 	
-	<!-- FastPro -->
+    <!-- FastPro -->
     <a href="https://download.ottrun.com/downloads/529492/PlayPro-7.0-v2000.apk" target="_blank" rel="noopener noreferrer" class="button btn-yellow" aria-label="Baixar FastPro Player IPTV">
         <i class="fa-solid fa-download"></i>
         <span class="btn-text">
@@ -269,23 +334,21 @@ footer a:hover {
         </span>
     </a>
     
-    <!-- UniTV TV Box -->
-    <a href="https://htv.vftopibo.top/UniTV_4.18.1-2.apk" target="_blank" rel="noopener noreferrer" class="button btn-indigo" aria-label="Baixar UniTV para TV Box">
-        <i class="fa-solid fa-download"></i>
-        <span class="btn-text">
+    <!-- UniTV (Unificado: TV Box e Celular na mesma linha) -->
+    <div class="button-group btn-indigo">
+        <div class="unitv-title">
+            <i class="fa-solid fa-tv"></i>
             <strong>UniTV</strong>
-            <small>TV Box</small>
-        </span>
-    </a>
-
-    <!-- UniTV Celular -->
-    <a href="https://htv.vftopibo.top/unitv-celular.apk" target="_blank" rel="noopener noreferrer" class="button btn-indigo" aria-label="Baixar UniTV para celular">
-        <i class="fa-solid fa-download"></i>
-        <span class="btn-text">
-            <strong>UniTV</strong>
-            <small>Celular</small>
-        </span>
-    </a>
+        </div>
+        <div class="unitv-links">
+            <a href="https://htv.vftopibo.top/UniTV_4.18.1-2.apk" target="_blank" rel="noopener noreferrer" class="btn-sublink" aria-label="Baixar UniTV para TV Box">
+                <i class="fa-solid fa-download"></i> TV Box
+            </a>
+            <a href="https://htv.vftopibo.top/unitv-celular.apk" target="_blank" rel="noopener noreferrer" class="btn-sublink" aria-label="Baixar UniTV para Celular">
+                <i class="fa-solid fa-mobile-screen-button"></i> Celular
+            </a>
+        </div>
+    </div>
 
     <!-- XCIPTV -->
     <a href="https://drive.google.com/uc?export=download&id=1TrlPlOyJUIC8sIkNY_vd8ReVG_-xmveZ" target="_blank" rel="noopener noreferrer" class="button btn-blue" aria-label="Baixar XCIPTV">
@@ -315,18 +378,18 @@ footer a:hover {
 </div>
 
 <script>
-/* Controle de Navegação TV / Teclado */
-const buttons = [...document.querySelectorAll('.button')];
+/* Controle de Navegação TV / Teclado (Suporta links internos do container) */
+const focusableElements = [...document.querySelectorAll('.button, .btn-sublink')];
 let current = 0;
 
-function focusButton(index) {
-    if (!buttons.length) return;
-    current = (index + buttons.length) % buttons.length;
-    buttons[current].focus();
+function focusElement(index) {
+    if (!focusableElements.length) return;
+    current = (index + focusableElements.length) % focusableElements.length;
+    focusableElements[current].focus();
 }
 
 document.addEventListener('keydown', (e) => {
-    if (!buttons.length) return;
+    if (!focusableElements.length) return;
 
     const navKeys = ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'];
     if (!navKeys.includes(e.key)) return;
@@ -334,16 +397,16 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
 
     if (document.activeElement === document.body) {
-        focusButton(0);
+        focusElement(0);
         return;
     }
 
     const cols = window.innerWidth >= 1200 ? 3 : window.innerWidth >= 601 ? 2 : 1;
 
-    if (e.key === 'ArrowRight') focusButton(current + 1);
-    if (e.key === 'ArrowLeft')  focusButton(current - 1);
-    if (e.key === 'ArrowDown')  focusButton(current + cols);
-    if (e.key === 'ArrowUp')    focusButton(current - cols);
+    if (e.key === 'ArrowRight') focusElement(current + 1);
+    if (e.key === 'ArrowLeft')  focusElement(current - 1);
+    if (e.key === 'ArrowDown')  focusElement(current + cols);
+    if (e.key === 'ArrowUp')    focusElement(current - cols);
 });
 </script>
 
