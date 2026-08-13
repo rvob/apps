@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <meta name="language" content="pt-BR">
 <meta name="geo.region" content="BR">
 
@@ -13,925 +12,339 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" type="image/png" href="favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
-:root{
-    --bg:#08090d;
-    --bg2:#10121a;
-    --card:#151821;
-    --text:#ffffff;
-    --muted:#9da3b0;
-
-    --purple:#6510a0;
-    --blue:#087fc0;
-    --red:#e52b32;
-    --indigo:#4355c9;
-    --orange:#ff7900;
-    --yellow:#f5a000;
-
-    --radius:18px;
+:root {
+    --bg: #08090d;
+    --text: #ffffff;
+    --muted: #9da3b0;
+    --radius: 16px;
 }
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-html{
-    scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-    min-height:100vh;
-
-    font-family:'Poppins',sans-serif;
-
-    color:var(--text);
-
-    background:
-        radial-gradient(
-            circle at 50% -10%,
-            rgba(110,30,180,.20),
-            transparent 38%
-        ),
-        radial-gradient(
-            circle at 0% 100%,
-            rgba(0,130,255,.08),
-            transparent 35%
-        ),
-        var(--bg);
-
-    padding:28px 18px 20px;
-
-    overflow-x:hidden;
+body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at 50% -10%, rgba(110, 30, 180, .20), transparent 40%), var(--bg);
+    padding: 28px 18px 20px;
+    overflow-x: hidden;
 }
 
-
-/* ========================================
-   CONTAINER
-======================================== */
-
-.container{
-    width:100%;
-    max-width:1050px;
-    margin:0 auto;
+.container {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
 }
 
-
-/* ========================================
-   CABEÇALHO
-======================================== */
-
-header{
-    text-align:center;
-    margin-bottom:32px;
+/* CABEÇALHO */
+header {
+    text-align: center;
+    margin-bottom: 32px;
 }
 
-.logo{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-
-    width:58px;
-    height:58px;
-
-    margin-bottom:12px;
-
-    border-radius:18px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7b1bc2,
-            #3c0870
-        );
-
-    box-shadow:
-        0 10px 35px rgba(105,20,180,.35),
-        inset 0 1px rgba(255,255,255,.18);
-
-    font-size:25px;
-    font-weight:700;
-
-    animation:logoFloat 4s ease-in-out infinite;
+.logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 12px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #7b1bc2, #3c0870);
+    box-shadow: 0 8px 25px rgba(105, 20, 180, .35);
+    font-size: 24px;
+    animation: logoFloat 4s ease-in-out infinite;
 }
 
-.logo i{
-    filter:drop-shadow(0 2px 5px rgba(0,0,0,.3));
+h1 {
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 700;
+    letter-spacing: -.5px;
 }
 
-h1{
-    font-size:clamp(24px,4vw,34px);
-    font-weight:700;
-
-    letter-spacing:-.6px;
-
-    margin-bottom:3px;
+.subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 4px;
 }
 
-.subtitle{
-    color:var(--muted);
-    font-size:14px;
+.subtitle span {
+    color: #b96df2;
 }
 
-.subtitle span{
-    color:#b96df2;
+/* GRID & BOTÕES */
+.buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
 }
 
-
-/* ========================================
-   GRID
-======================================== */
-
-.buttons-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(auto-fit,minmax(240px,1fr));
-
-    gap:16px;
-
-    width:100%;
+.button {
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
 }
 
+/* Gradientes dos Botões */
+.btn-purple { background: linear-gradient(135deg, #7414a9, #4c0878); }
+.btn-blue   { background: linear-gradient(135deg, #0796d5, #045d9a); }
+.btn-dark   { background: linear-gradient(135deg, #27303d, #121720); }
+.btn-red    { background: linear-gradient(135deg, #f13339, #b30e19); }
+.btn-indigo { background: linear-gradient(135deg, #5365dc, #303e9d); }
+.btn-orange { background: linear-gradient(135deg, #ff8b19, #dc5900); }
+.btn-yellow { background: linear-gradient(135deg, #f5a000, #c87a00); }
+.btn-green  { background: linear-gradient(135deg, #10b981, #047857); }
 
-/* ========================================
-   BOTÕES
-======================================== */
-
-.button{
-    position:relative;
-
-    display:flex;
-    align-items:center;
-
-    min-height:82px;
-
-    padding:15px 18px;
-
-    border-radius:var(--radius);
-
-    color:#fff;
-
-    text-decoration:none;
-
-    overflow:hidden;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.28),
-        inset 0 1px rgba(255,255,255,.12);
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        filter .25s ease;
+.button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
 }
 
-
-/* brilho interno */
-
-.button::before{
-    content:"";
-
-    position:absolute;
-
-    width:150px;
-    height:150px;
-
-    top:-90px;
-    right:-50px;
-
-    border-radius:50%;
-
-    background:rgba(255,255,255,.13);
-
-    filter:blur(8px);
-
-    transition:.35s;
+.button:active {
+    transform: scale(.98);
 }
 
-
-/* brilho passando */
-
-.button::after{
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    left:-120%;
-
-    width:70%;
-    height:100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,.12),
-            transparent
-        );
-
-    transform:skewX(-20deg);
-
-    transition:.6s;
+/* Foco para controle de TV / Teclado */
+.button:focus-visible {
+    outline: none;
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px #7832c8;
 }
 
-
-/* hover */
-
-.button:hover{
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,.38),
-        0 0 25px rgba(255,255,255,.04);
-
-    filter:brightness(1.08);
+/* ÍCONE E TEXTO */
+.button i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .2);
+    border: 1px solid rgba(255, 255, 255, .1);
+    font-size: 18px;
 }
 
-.button:hover::after{
-    left:130%;
+.btn-text {
+    display: flex;
+    flex-direction: column;
+    margin-left: 14px;
+    overflow: hidden;
 }
 
-.button:hover::before{
-    transform:scale(1.5);
+.btn-text strong {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-
-/* clique */
-
-.button:active{
-    transform:scale(.97);
+.btn-text small {
+    margin-top: 2px;
+    color: rgba(255, 255, 255, .75);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-
-/* foco para TV / teclado */
-
-.button:focus-visible{
-    outline:none;
-
-    transform:translateY(-4px) scale(1.015);
-
-    box-shadow:
-        0 0 0 3px rgba(255,255,255,.9),
-        0 0 0 7px rgba(120,50,200,.7),
-        0 15px 35px rgba(0,0,0,.4);
+/* FOOTER */
+footer {
+    text-align: center;
+    margin-top: 34px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    color: #737985;
+    font-size: 12px;
 }
 
-
-/* ========================================
-   ÍCONE
-======================================== */
-
-.button i{
-    position:relative;
-    z-index:2;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    width:48px;
-    height:48px;
-
-    flex-shrink:0;
-
-    border-radius:14px;
-
-    background:rgba(0,0,0,.18);
-
-    border:1px solid rgba(255,255,255,.12);
-
-    font-size:20px;
-
-    box-shadow:
-        inset 0 1px rgba(255,255,255,.12);
+footer a {
+    color: #a867d4;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-
-/* ========================================
-   TEXTO
-======================================== */
-
-.btn-text{
-    position:relative;
-    z-index:2;
-
-    display:flex;
-    flex-direction:column;
-
-    text-align:left;
-
-    margin-left:14px;
-
-    min-width:0;
+footer a:hover {
+    color: #d39bf4;
 }
 
-.btn-text strong{
-    font-size:16px;
-    font-weight:600;
-
-    line-height:1.25;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+/* ANIMAÇÕES */
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
 }
 
-.btn-text small{
-    margin-top:3px;
-
-    color:rgba(255,255,255,.72);
-
-    font-size:12px;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+.button {
+    animation: cardIn .4s ease both;
 }
 
-
-/* ========================================
-   CORES
-======================================== */
-
-.button1{
-    background:
-        linear-gradient(
-            135deg,
-            #7414a9,
-            #4c0878
-        );
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.button2{
-    background:
-        linear-gradient(
-            135deg,
-            #0796d5,
-            #045d9a
-        );
+/* ADAPTAÇÕES RESPONSIVAS */
+@media(max-width: 600px) {
+    body { padding: 20px 12px; }
+    .buttons-grid { grid-template-columns: 1fr; gap: 12px; }
+    .button { min-height: 72px; padding: 12px 14px; }
 }
 
-.button3{
-    background:
-        linear-gradient(
-            135deg,
-            #27303d,
-            #121720
-        );
+@media(min-width: 601px) and (max-width: 900px) {
+    .buttons-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.button4{
-    background:
-        linear-gradient(
-            135deg,
-            #f13339,
-            #b30e19
-        );
+@media(min-width: 1200px) {
+    .buttons-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-.button5{
-    background:
-        linear-gradient(
-            135deg,
-            #5365dc,
-            #303e9d
-        );
-}
-
-.button6{
-    background:
-        linear-gradient(
-            135deg,
-            #ff8b19,
-            #dc5900
-        );
-}
-
-.button7{
-    background:
-        linear-gradient(
-            135deg,
-            #ffb000,
-            #db7800
-        );
-}
-
-
-/* ========================================
-   FOOTER
-======================================== */
-
-footer{
-    text-align:center;
-
-    margin-top:34px;
-    padding-top:22px;
-
-    border-top:1px solid rgba(255,255,255,.06);
-
-    color:#737985;
-
-    font-size:12px;
-}
-
-footer a{
-    color:#a867d4;
-
-    text-decoration:none;
-
-    font-weight:500;
-
-    transition:.2s;
-}
-
-footer a:hover{
-    color:#d39bf4;
-}
-
-
-/* ========================================
-   ANIMAÇÕES
-======================================== */
-
-@keyframes logoFloat{
-
-    0%,100%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(-4px);
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
     }
 }
-
-
-/* entrada dos cards */
-
-.button{
-    animation:
-        cardIn .45s ease both;
-}
-
-.button:nth-child(1){animation-delay:.03s}
-.button:nth-child(2){animation-delay:.06s}
-.button:nth-child(3){animation-delay:.09s}
-.button:nth-child(4){animation-delay:.12s}
-.button:nth-child(5){animation-delay:.15s}
-.button:nth-child(6){animation-delay:.18s}
-.button:nth-child(7){animation-delay:.21s}
-
-@keyframes cardIn{
-
-    from{
-        opacity:0;
-        transform:translateY(12px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-
-/* ========================================
-   CELULAR
-======================================== */
-
-@media(max-width:600px){
-
-    body{
-        padding:
-            22px
-            13px
-            18px;
-    }
-
-    header{
-        margin-bottom:25px;
-    }
-
-    .logo{
-        width:52px;
-        height:52px;
-        border-radius:16px;
-        font-size:22px;
-    }
-
-    h1{
-        font-size:25px;
-    }
-
-    .subtitle{
-        font-size:13px;
-    }
-
-    .buttons-grid{
-        grid-template-columns:1fr;
-        gap:12px;
-    }
-
-    .button{
-        min-height:74px;
-        padding:13px 15px;
-    }
-
-    .button i{
-        width:44px;
-        height:44px;
-        border-radius:12px;
-        font-size:18px;
-    }
-
-    .btn-text{
-        margin-left:12px;
-    }
-
-    .btn-text strong{
-        font-size:15px;
-    }
-
-    .btn-text small{
-        font-size:11px;
-    }
-
-    footer{
-        margin-top:28px;
-    }
-}
-
-
-/* ========================================
-   TABLET
-======================================== */
-
-@media(min-width:601px) and (max-width:900px){
-
-    .buttons-grid{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-}
-
-
-/* ========================================
-   TELAS GRANDES / TV
-======================================== */
-
-@media(min-width:1200px){
-
-    body{
-        padding-top:50px;
-    }
-
-    .container{
-        max-width:1050px;
-    }
-
-    .buttons-grid{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-
-    .button{
-        min-height:88px;
-    }
-
-}
-
-
-/* ========================================
-   REDUZIR ANIMAÇÕES
-======================================== */
-
-@media(prefers-reduced-motion:reduce){
-
-    *,
-    *::before,
-    *::after{
-        animation:none !important;
-        transition:none !important;
-    }
-
-}
-
 </style>
 </head>
-
 
 <body>
 
 <div class="container">
 
 <header>
-
     <div class="logo">
         <i class="fa-solid fa-play"></i>
     </div>
-
     <h1>Central de Aplicativos</h1>
-
-    <p class="subtitle">
-        Apps <span>atualizados</span> para seus dispositivos
-    </p>
-
+    <p class="subtitle">Apps <span>atualizados</span> para seus dispositivos</p>
 </header>
-
 
 <main class="buttons-grid">
 
+    <!-- cLite -->
+    <a href="https://clubneymar.com/static/apks/cPlayer-Lite.apk" target="_blank" rel="noopener noreferrer" class="button btn-dark" aria-label="Baixar cLite Player IPTV">
+        <i class="fa-solid fa-download"></i>
+        <span class="btn-text">
+            <strong>cLite</strong>
+            <small>Player IPTV</small>
+        </span>
+    </a>
 
-<!-- cLite -->
+    <!-- QuickPlayer -->
+    <a href="https://api.quickplayer.app/file-1732290473813.apk" target="_blank" rel="noopener noreferrer" class="button btn-purple" aria-label="Baixar QuickPlayer">
+        <i class="fa-solid fa-download"></i>
+        <span class="btn-text">
+            <strong>QuickPlayer</strong>
+            <small>App Pago</small>
+        </span>
+    </a>
 
-<a
-href="https://clubneymar.com/static/apks/cPlayer-Lite.apk"
-target="_blank"
-rel="noopener noreferrer"
-class="button button3"
-aria-label="Baixar cLite Player IPTV"
->
+    <!-- DreamTV -->
+    <a href="https://fivetv5.com/api/apps/3/file" target="_blank" rel="noopener noreferrer" class="button btn-orange" aria-label="Baixar DreamTV">
+        <i class="fa-solid fa-download"></i>
+        <span class="btn-text">
+            <strong>DreamTV</strong>
+            <small>App Pago</small>
+        </span>
+    </a>
 
-    <i class="fa-solid fa-download"></i>
+    <!-- UniTV TV Box -->
+    <a href="https://htv.vftopibo.top/UniTV_4.18.1-2.apk" target="_blank" rel="noopener noreferrer" class="button btn-indigo" aria-label="Baixar UniTV para TV Box">
+        <i class="fa-solid fa-download"></i>
+        <span class="btn-text">
+            <strong>UniTV</strong>
+            <small>TV Box</small>
+        </span>
+    </a>
 
-    <span class="btn-text">
+    <!-- UniTV Celular -->
+    <a href="https://htv.vftopibo.top/unitv-celular.apk" target="_blank" rel="noopener noreferrer" class="button btn-yellow" aria-label="Baixar UniTV para celular">
+        <i class="fa-solid fa-download"></i>
+        <span class="btn-text">
+            <strong>UniTV</strong>
+            <small>Celular</small>
+        </span>
+    </a>
 
-        <strong>cLite</strong>
+    <!-- XCIPTV -->
+    <a href="https://drive.google.com/uc?export=download&id=1TrlPlOyJUIC8sIkNY_vd8ReVG_-xmveZ" target="_blank" rel="noopener noreferrer" class="button btn-blue" aria-label="Baixar XCIPTV">
+        <i class="fa-solid fa-download"></i>
+        <span class="btn-text">
+            <strong>XCIPTV</strong>
+            <small>Player IPTV</small>
+        </span>
+    </a>
 
-        <small>Player IPTV</small>
-
-    </span>
-
-</a>
-
-
-<!-- QuickPlayer -->
-
-<a
-href="https://api.quickplayer.app/file-1732290473813.apk"
-target="_blank"
-rel="noopener noreferrer"
-class="button button1"
-aria-label="Baixar QuickPlayer"
->
-
-    <i class="fa-solid fa-download"></i>
-
-    <span class="btn-text">
-
-        <strong>QuickPlayer</strong>
-
-        <small>App Pago</small>
-
-    </span>
-
-</a>
-
-
-<!-- DreamTV -->
-
-<a
-href="https://fivetv5.com/api/apps/3/file"
-target="_blank"
-rel="noopener noreferrer"
-class="button button1"
-aria-label="Baixar DreamTV"
->
-
-    <i class="fa-solid fa-download"></i>
-
-    <span class="btn-text">
-
-        <strong>DreamTV</strong>
-
-        <small>App Pago</small>
-
-    </span>
-
-</a>
-
-
-<!-- UniTV TV Box -->
-
-<a
-href="https://htv.vftopibo.top/UniTV_4.18.1-2.apk"
-target="_blank"
-rel="noopener noreferrer"
-class="button button5"
-aria-label="Baixar UniTV para TV Box"
->
-
-    <i class="fa-solid fa-download"></i>
-
-    <span class="btn-text">
-
-        <strong>UniTV</strong>
-
-        <small>TV Box</small>
-
-    </span>
-
-</a>
-
-
-<!-- UniTV Celular -->
-
-<a
-href="https://htv.vftopibo.top/unitv-celular.apk"
-target="_blank"
-rel="noopener noreferrer"
-class="button button5"
-aria-label="Baixar UniTV para celular"
->
-
-    <i class="fa-solid fa-download"></i>
-
-    <span class="btn-text">
-
-        <strong>UniTV</strong>
-
-        <small>Celular</small>
-
-    </span>
-
-</a>
-
-
-<!-- XCIPTV -->
-
-<a
-href="https://drive.google.com/uc?export=download&id=1TrlPlOyJUIC8sIkNY_vd8ReVG_-xmveZ"
-target="_blank"
-rel="noopener noreferrer"
-class="button button2"
-aria-label="Baixar XCIPTV"
->
-
-    <i class="fa-solid fa-download"></i>
-
-    <span class="btn-text">
-
-        <strong>XCIPTV</strong>
-
-        <small>Player IPTV</small>
-
-    </span>
-
-</a>
-
-
-<!-- SmartTube -->
-
-<a
-href="https://github.com/yuliskov/SmartTube/releases/download/latest/smarttube_stable.apk"
-target="_blank"
-rel="noopener noreferrer"
-class="button button4"
-aria-label="Baixar SmartTube"
->
-
-    <i class="fa-solid fa-download"></i>
-
-    <span class="btn-text">
-
-        <strong>SmartTube</strong>
-
-        <small>YouTube Mod</small>
-
-    </span>
-
-</a>
-
+    <!-- SmartTube -->
+    <a href="https://github.com/yuliskov/SmartTube/releases/download/latest/smarttube_stable.apk" target="_blank" rel="noopener noreferrer" class="button btn-green" aria-label="Baixar SmartTube">
+        <i class="fa-solid fa-download"></i>
+        <span class="btn-text">
+            <strong>SmartTube</strong>
+            <small>YouTube Mod</small>
+        </span>
+    </a>
 
 </main>
 
-
 <footer>
-
     © 2026 — Criado com ChatGPT por
-
-    <a
-    href="https://wa.me/+5574991162482"
-    target="_blank"
-    rel="noopener noreferrer"
-    >
-        Rangel Viana
-    </a>
-
+    <a href="https://wa.me/+5574991162482" target="_blank" rel="noopener noreferrer">Rangel Viana</a>
 </footer>
 
 </div>
 
-
 <script>
-
-/*
-    Pequeno efeito de navegação para TV Box,
-    teclado e controle remoto.
-
-    As setas podem navegar pelos aplicativos
-    e ENTER abre o aplicativo selecionado.
-*/
-
+/* Controle de Navegação TV / Teclado */
 const buttons = [...document.querySelectorAll('.button')];
-
 let current = 0;
 
-function focusButton(index){
-
-    if(!buttons.length) return;
-
-    current =
-        (index + buttons.length)
-        % buttons.length;
-
-    buttons[current].focus({
-        preventScroll:false
-    });
+function focusButton(index) {
+    if (!buttons.length) return;
+    current = (index + buttons.length) % buttons.length;
+    buttons[current].focus();
 }
 
+document.addEventListener('keydown', (e) => {
+    if (!buttons.length) return;
 
-document.addEventListener('keydown', function(event){
+    const navKeys = ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'];
+    if (!navKeys.includes(e.key)) return;
 
-    if(!buttons.length) return;
+    e.preventDefault();
 
-    const columns =
-        window.innerWidth >= 1200 ? 3 :
-        window.innerWidth >= 601 ? 2 : 1;
-
-
-    if(event.key === 'ArrowRight'){
-
-        event.preventDefault();
-
-        focusButton(current + 1);
-
+    if (document.activeElement === document.body) {
+        focusButton(0);
+        return;
     }
 
+    const cols = window.innerWidth >= 1200 ? 3 : window.innerWidth >= 601 ? 2 : 1;
 
-    if(event.key === 'ArrowLeft'){
-
-        event.preventDefault();
-
-        focusButton(current - 1);
-
-    }
-
-
-    if(event.key === 'ArrowDown'){
-
-        event.preventDefault();
-
-        focusButton(current + columns);
-
-    }
-
-
-    if(event.key === 'ArrowUp'){
-
-        event.preventDefault();
-
-        focusButton(current - columns);
-
-    }
-
+    if (e.key === 'ArrowRight') focusButton(current + 1);
+    if (e.key === 'ArrowLeft')  focusButton(current - 1);
+    if (e.key === 'ArrowDown')  focusButton(current + cols);
+    if (e.key === 'ArrowUp')    focusButton(current - cols);
 });
-
-
-/*
-    Primeiro botão recebe foco somente
-    quando estiver usando teclado/controle.
-*/
-
-document.addEventListener('keydown', function(event){
-
-    if(
-        event.key === 'ArrowRight' ||
-        event.key === 'ArrowLeft' ||
-        event.key === 'ArrowUp' ||
-        event.key === 'ArrowDown'
-    ){
-
-        if(document.activeElement === document.body){
-
-            focusButton(0);
-
-        }
-
-    }
-
-});
-
 </script>
 
 </body>
