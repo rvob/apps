@@ -61,7 +61,7 @@
             display: grid;
             grid-template-columns: 360px 1fr;
             gap: 32px;
-            align-items: start;
+            align-items: center;
         }
 
         /* =========================================================
@@ -183,14 +183,14 @@
         .btn:active { transform: translateY(0); }
 
         /* =========================================================
-           ÁREA DE PRÉ-VISUALIZAÇÃO DA PLACA (FORMATO A5)
+           ÁREA DE PRÉ-VISUALIZAÇÃO DA PLACA
         ========================================================= */
         .preview-area {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: auto;
+            padding: 10px;
         }
 
         .placa {
@@ -203,16 +203,17 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
+            margin: 0 auto;
             
             width: 100%;
             max-width: 650px;
-            aspect-ratio: 1.414 / 1;
+            min-height: auto;
         }
 
         /* CABEÇALHO DA PLACA */
         .placa-header {
             background: linear-gradient(135deg, var(--pix-primary), var(--pix-dark));
-            padding: 24px 32px;
+            padding: 22px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -221,27 +222,27 @@
         }
 
         .placa-header .logo-pix {
-            height: 38px;
+            height: 36px;
             width: auto;
             filter: brightness(0) invert(1);
         }
 
         .placa-header .header-tag {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
             background: rgba(255, 255, 255, 0.2);
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
         }
 
         /* CORPO DA PLACA */
         .placa-body {
-            padding: 28px 32px 20px 32px;
+            padding: 24px 28px;
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 28px;
+            gap: 24px;
             align-items: center;
             flex: 1;
             width: 100%;
@@ -250,7 +251,7 @@
         .info-group {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         .info-block {
@@ -268,14 +269,14 @@
         }
 
         .info-value-main {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
             color: #0f1115;
             line-height: 1.2;
         }
 
         .info-value-sub {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #374151;
         }
@@ -284,12 +285,12 @@
             background: var(--pix-light);
             border: 1px solid rgba(50, 188, 173, 0.3);
             border-radius: 12px;
-            padding: 12px 16px;
-            margin-top: 4px;
+            padding: 10px 14px;
+            margin-top: 2px;
         }
 
         .key-badge .key-text {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             color: var(--pix-dark);
             word-break: break-all;
@@ -303,13 +304,13 @@
             justify-content: center;
             background: #f8fafc;
             border: 2px dashed #e2e8f0;
-            padding: 16px;
+            padding: 14px;
             border-radius: 16px;
         }
 
         #qrcode {
-            width: 170px;
-            height: 170px;
+            width: 160px;
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -324,17 +325,17 @@
             font-size: 11px;
             font-weight: 700;
             color: #475569;
-            margin-top: 10px;
+            margin-top: 8px;
             text-align: center;
         }
 
-        /* RODAPÉ DA PLACA */
+        /* RODAPÉ DA PLACA (SEM CORTES) */
         .placa-footer {
             background: #f1f5f9;
-            padding: 18px 24px 22px 24px;
+            padding: 14px 20px;
             font-size: 11px;
-            font-weight: 700;
-            color: #64748b;
+            font-weight: 800;
+            color: #475569;
             letter-spacing: 0.5px;
             border-top: 1px solid #e2e8f0;
             display: flex;
@@ -345,12 +346,11 @@
         }
 
         /* =========================================================
-           FORMATO VERTICAL
+           FORMATO VERTICAL (CORRIGIDO PARA NÃO CORTAR)
         ========================================================= */
         .placa.vertical {
-            max-width: 440px;
-            aspect-ratio: 1 / 1.414;
-            align-items: center;
+            max-width: 380px;
+            margin: 0 auto;
         }
 
         .placa.vertical .placa-body {
@@ -358,6 +358,7 @@
             text-align: center;
             gap: 20px;
             justify-items: center;
+            padding: 24px 20px;
         }
 
         .placa.vertical .info-group {
@@ -367,17 +368,17 @@
 
         .placa.vertical .qr-container {
             width: 100%;
-            max-width: 240px;
+            max-width: 220px;
             margin: 0 auto;
         }
 
         .placa.vertical #qrcode {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
         }
 
         /* =========================================================
-           RESPONSIVIDADE (CELULAR E TABLETS)
+           RESPONSIVIDADE
         ========================================================= */
         @media (max-width: 850px) {
             .app-layout {
@@ -388,18 +389,10 @@
                 padding: 12px;
             }
 
-            .placa {
-                aspect-ratio: auto !important;
-            }
-
             .placa-body {
                 grid-template-columns: 1fr;
                 padding: 20px;
                 gap: 20px;
-            }
-
-            .placa-footer {
-                padding: 16px 20px 20px 20px;
             }
 
             .qr-container {
@@ -407,12 +400,8 @@
             }
 
             #qrcode {
-                width: 160px !important;
-                height: 160px !important;
-            }
-
-            .info-value-main {
-                font-size: 18px;
+                width: 150px !important;
+                height: 150px !important;
             }
         }
 
@@ -545,9 +534,9 @@
                 </div>
             </div>
 
-            <!-- RODAPÉ DA PLACA -->
+            <!-- RODAPÉ DA PLACA (TEXTO ATUALIZADO E ENXUTO) -->
             <div class="placa-footer">
-                PAGUE COM SEGURANÇA E RAPIDEZ ATRAVÉS DO SEU APLICATIVO BANCÁRIO
+                PAGUE COM SEGURANÇA PELO SEU APP BANCÁRIO
             </div>
 
         </div>
