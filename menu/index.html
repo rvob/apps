@@ -283,7 +283,7 @@
 
 <div class="container">
   <header>
-    <h1 id="restaurant-title">🍔 Lanchonete do Bairro</h1>
+    <h1 id="restaurant-title">Carregando...</h1>
     <p>Monte seu pedido e envie direto pelo WhatsApp</p>
   </header>
 
@@ -321,7 +321,7 @@
     </div>
   </div>
 
-  <!-- O cardápio será injetado dinamicamente via JSON -->
+  <!-- O cardápio será injetado dinamicamente via Fetch do JSON -->
   <div id="menu-sections"></div>
 
   <div class="card">
@@ -365,47 +365,32 @@
 </div>
 
 <script>
-  // =========================================================================
-  // JSON ÚNICO DE CONFIGURAÇÃO E CARDÁPIO
-  // =========================================================================
-  const MENU_DATA = {
-    "config": {
-      "restaurantName": "🍔 Lanchonete do Bairro",
-      "whatsappNumber": "5574991162482" // Formato: Código País (55) + DDD + Número
-    },
-    "categories": [
-      {
-        "id": "lanches",
-        "title": "2. Lanches",
-        "items": [
-          { "id": "l1", "name": "X-Burguer", "desc": "Pão, hambúrguer 150g, queijo prato e maionese da casa", "price": 22.00 },
-          { "id": "l2", "name": "X-Salada", "desc": "Pão, hambúrguer 150g, queijo, alface, tomate e maionese", "price": 25.00 },
-          { "id": "l3", "name": "X-Bacon", "desc": "Pão, hambúrguer 150g, queijo, bacon crocante e maionese", "price": 28.50 },
-          { "id": "l4", "name": "Porção de Batata Frita", "desc": "400g de batata frita com molho especial", "price": 18.00 }
-        ]
-      },
-      {
-        "id": "bebidas",
-        "title": "3. Bebidas",
-        "items": [
-          { "id": "b1", "name": "Coca-Cola Lata 350ml", "desc": "Gelada", "price": 6.00 },
-          { "id": "b2", "name": "Coca-Cola 2 Litros", "desc": "Gelada", "price": 14.00 },
-          { "id": "b3", "name": "Suco Natural de Laranja 500ml", "desc": "Sem açúcar aditivo", "price": 9.00 },
-          { "id": "b4", "name": "Água Mineral 500ml", "desc": "Sem gás", "price": 4.00 }
-        ]
-      }
-    ]
-  };
-
-  // Estado das quantidades
+  let menuData = null;
   const quantities = {};
 
+  // Carrega o arquivo JSON externo
+  async function loadMenuJSON() {
+    try {
+      const response = await fetch('./cardapio.json');
+      if (!response.ok) {
+        throw new Error('Não foi possível carregar o arquivo cardapio.json');
+      }
+      menuData = await response.json();
+      initMenu();
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao carregar o cardápio. Certifique-se de que o arquivo "cardapio.json" está na mesma pasta.');
+    }
+  }
+
   function initMenu() {
-    document.getElementById('restaurant-title').innerText = MENU_DATA.config.restaurantName;
+    if (!menuData) return;
+
+    document.getElementById('restaurant-title').innerText = menuData.config.restaurantName;
     const container = document.getElementById('menu-sections');
     container.innerHTML = '';
 
-    MENU_DATA.categories.forEach(cat => {
+    menuData.categories.forEach(cat => {
       const card = document.createElement('div');
       card.className = 'card';
       
@@ -443,8 +428,9 @@
   }
 
   function calculateTotal() {
+    if (!menuData) return;
     let total = 0;
-    MENU_DATA.categories.forEach(cat => {
+    menuData.categories.forEach(cat => {
       cat.items.forEach(item => {
         const qty = quantities[item.id] || 0;
         total += qty * item.price;
@@ -461,6 +447,8 @@
   }
 
   function generateOrder() {
+    if (!menuData) return;
+
     const name = document.getElementById('client-name').value.trim();
     const deliveryType = document.getElementById('delivery-type').value;
     const address = document.getElementById('client-address').value.trim();
@@ -480,7 +468,7 @@
 
     // Coleta dos itens selecionados
     const selectedItems = [];
-    MENU_DATA.categories.forEach(cat => {
+    menuData.categories.forEach(cat => {
       cat.items.forEach(item => {
         const qty = quantities[item.id] || 0;
         if (qty > 0) {
@@ -517,7 +505,7 @@
     
     // Configura o link direto do WhatsApp usando a config do JSON
     const encodedText = encodeURIComponent(text);
-    document.getElementById('wa-link').href = `https://wa.me/${MENU_DATA.config.whatsappNumber}?text=${encodedText}`;
+    document.getElementById('wa-link').href = `https://wa.me/${menuData.config.whatsappNumber}?text=${encodedText}`;
 
     document.getElementById('order-modal').style.display = 'flex';
   }
@@ -533,7 +521,8 @@
     document.getElementById('order-modal').style.display = 'none';
   }
 
-  window.onload = initMenu;
+  // Carrega o JSON assim que a página é aberta
+  window.onload = loadMenuJSON;
 </script>
 
 </body>

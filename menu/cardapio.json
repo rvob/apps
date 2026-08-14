@@ -1,0 +1,28 @@
+{
+  "config": {
+    "restaurantName": "🍔 Lanchonete do Bairro",
+    "whatsappNumber": "5574991162482"
+  },
+  "categories": [
+    {
+      "id": "lanches",
+      "title": "2. Lanches",
+      "items": [
+        { "id": "l1", "name": "X-Burguer", "desc": "Pão, hambúrguer 150g, queijo prato e maionese da casa", "price": 22.00 },
+        { "id": "l2", "name": "X-Salada", "desc": "Pão, hambúrguer 150g, queijo, alface, tomate e maionese", "price": 25.00 },
+        { "id": "l3", "name": "X-Bacon", "desc": "Pão, hambúrguer 150g, queijo, bacon crocante e maionese", "price": 28.50 },
+        { "id": "l4", "name": "Porção de Batata Frita", "desc": "400g de batata frita com molho especial", "price": 18.00 }
+      ]
+    },
+    {
+      "id": "bebidas",
+      "title": "3. Bebidas",
+      "items": [
+        { "id": "b1", "name": "Coca-Cola Lata 350ml", "desc": "Gelada", "price": 6.00 },
+        { "id": "b2", "name": "Coca-Cola 2 Litros", "desc": "Gelada", "price": 14.00 },
+        { "id": "b3", "name": "Suco Natural de Laranja 500ml", "desc": "Sem açúcar aditivo", "price": 9.00 },
+        { "id": "b4", "name": "Água Mineral 500ml", "desc": "Sem gás", "price": 4.00 }
+      ]
+    }
+  ]
+}
