@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Gerador de Placa PIX - Profissional</title>
+
+    <!-- Fonte Inter para Legibilidade Superior -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Libs QR Code e Canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* =========================================================
+           RESET E VARIÁVEIS DE DESIGN
+        ========================================================= */
+        :root {
+            --pix-primary: #32bcad;
+            --pix-dark: #008774;
+            --pix-light: #e6f7f5;
+            --bg-dark: #121316;
+            --panel-bg: #1c1e22;
+            --text-muted: #9da4b0;
+            --border-color: #2e323b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-dark);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #ffffff;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* =========================================================
+           LAYOUT PRINCIPAL
+        ========================================================= */
+        .app-layout {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* =========================================================
+           PAINEL DE CONFIGURAÇÕES
+        ========================================================= */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .panel h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--pix-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select {
+            width: 100%;
+            height: 46px;
+            padding: 0 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: #121316;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input::placeholder {
+            color: #666;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--pix-primary);
+            box-shadow: 0 0 0 3px rgba(50, 188, 173, 0.2);
+        }
+
+        .format-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-format {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: #121316;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .btn-format.active {
+            background: rgba(50, 188, 173, 0.15);
+            border-color: var(--pix-primary);
+            color: var(--pix-primary);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            width: 100%;
+            height: 48px;
+            border: 0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary { background: var(--pix-primary); color: #0f1115; }
+        .btn-outline { background: #ffffff; color: #0f1115; }
+
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+
+        /* =========================================================
+           ÁREA DE PRÉ-VISUALIZAÇÃO DA PLACA (FORMATO A5)
+        ========================================================= */
+        .preview-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .placa {
+            background: #ffffff;
+            color: #0f1115;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            
+            width: 100%;
+            max-width: 650px;
+            aspect-ratio: 1.414 / 1;
+        }
+
+        /* CABEÇALHO DA PLACA */
+        .placa-header {
+            background: linear-gradient(135deg, var(--pix-primary), var(--pix-dark));
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .placa-header .logo-pix {
+            height: 38px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .placa-header .header-tag {
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        /* CORPO DA PLACA */
+        .placa-body {
+            padding: 28px 32px 20px 32px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 28px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .info-value-main {
+            font-size: 22px;
+            font-weight: 900;
+            color: #0f1115;
+            line-height: 1.2;
+        }
+
+        .info-value-sub {
+            font-size: 15px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .key-badge {
+            background: var(--pix-light);
+            border: 1px solid rgba(50, 188, 173, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-top: 4px;
+        }
+
+        .key-badge .key-text {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--pix-dark);
+            word-break: break-all;
+        }
+
+        /* CONTAINER DO QR CODE */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border: 2px dashed #e2e8f0;
+            padding: 16px;
+            border-radius: 16px;
+        }
+
+        #qrcode {
+            width: 170px;
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #qrcode img, #qrcode canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .qr-instruction {
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* RODAPÉ DA PLACA */
+        .placa-footer {
+            background: #f1f5f9;
+            padding: 18px 32px 22px 32px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* =========================================================
+           FORMATO VERTICAL
+        ========================================================= */
+        .placa.vertical {
+            max-width: 440px;
+            aspect-ratio: 1 / 1.414;
+        }
+
+        .placa.vertical .placa-body {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .placa.vertical .info-group {
+            align-items: center;
+        }
+
+        .placa.vertical .qr-container {
+            width: 100%;
+            max-width: 240px;
+            margin: 0 auto;
+        }
+
+        .placa.vertical #qrcode {
+            width: 180px;
+            height: 180px;
+        }
+
+        /* =========================================================
+           RESPONSIVIDADE (CELULAR E TABLETS)
+        ========================================================= */
+        @media (max-width: 850px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 12px;
+            }
+
+            .placa {
+                aspect-ratio: auto !important;
+            }
+
+            .placa-body {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .placa-footer {
+                padding: 16px 20px 20px 20px;
+            }
+
+            .qr-container {
+                width: 100%;
+            }
+
+            #qrcode {
+                width: 160px !important;
+                height: 160px !important;
+            }
+
+            .info-value-main {
+                font-size: 18px;
+            }
+        }
+
+        /* =========================================================
+           REGRAS DE IMPRESSÃO
+        ========================================================= */
+        @media print {
+            @page {
+                size: A5;
+                margin: 0;
+            }
+
+            body {
+                background: #ffffff;
+                padding: 0;
+                margin: 0;
+            }
+
+            .panel {
+                display: none !important;
+            }
+
+            .app-layout {
+                display: block;
+                width: 100%;
+            }
+
+            .preview-area {
+                padding: 0;
+            }
+
+            .placa {
+                width: 148mm;
+                height: 210mm;
+                max-width: none;
+                border-radius: 0;
+                box-shadow: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- PAINEL DE CONTROLE -->
+    <div class="panel">
+        <h2>Dados PIX</h2>
+
+        <div class="form-group">
+            <label for="nome">Nome do Recebedor</label>
+            <input id="nome" type="text" placeholder="Ex.: Rangel Viana">
+        </div>
+
+        <div class="form-group">
+            <label for="banco">Instituição / Banco (opcional)</label>
+            <input id="banco" type="text" placeholder="Ex.: Nubank, Mercado Pago...">
+        </div>
+
+        <div class="form-group">
+            <label for="tipo">Tipo de Chave</label>
+            <select id="tipo">
+                <option value="E-MAIL">E-mail</option>
+                <option value="CELULAR">Celular</option>
+                <option value="CPF">CPF</option>
+                <option value="CNPJ">CNPJ</option>
+                <option value="CHAVE ALEATÓRIA">Chave Aleatória</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="chave">Chave PIX</label>
+            <input id="chave" type="text" placeholder="Digite sua chave PIX">
+        </div>
+
+        <div class="form-group">
+            <label>Formato Visual</label>
+            <div class="format-selector">
+                <div id="btnHoriz" class="btn-format active" onclick="definirFormato('horizontal')">Horizontal</div>
+                <div id="btnVert" class="btn-format" onclick="definirFormato('vertical')">Vertical</div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="atualizarPlaca()">Gerar Placa</button>
+            <button class="btn btn-outline" onclick="baixarImagem()">Baixar Imagem</button>
+        </div>
+    </div>
+
+    <!-- ÁREA DE VISUALIZAÇÃO DA PLACA -->
+    <div class="preview-area">
+        <div id="placa" class="placa">
+            
+            <!-- CABEÇALHO DA PLACA -->
+            <div class="placa-header">
+                <img class="logo-pix" src="logo.png" alt="Pix Logo" crossorigin="anonymous">
+                <span class="header-tag">Pagamento Instantâneo</span>
+            </div>
+
+            <!-- CORPO DA PLACA -->
+            <div class="placa-body">
+                <div class="info-group">
+                    
+                    <div class="info-block">
+                        <span class="info-label">Recebedor</span>
+                        <div id="nomePlaca" class="info-value-main">Nome do Recebedor</div>
+                    </div>
+
+                    <div id="bancoContainer" class="info-block">
+                        <span class="info-label">Instituição Financeira</span>
+                        <div id="bancoPlaca" class="info-value-sub">Sua Instituição</div>
+                    </div>
+
+                    <div class="info-block">
+                        <div class="key-badge">
+                            <span class="info-label" id="tipoPlaca">Chave PIX • E-mail</span>
+                            <div id="chavePlaca" class="key-text">sua-chave@email.com</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- QR CODE -->
+                <div class="qr-container">
+                    <div id="qrcode"></div>
+                    <div class="qr-instruction">Aponte a câmera para pagar</div>
+                </div>
+            </div>
+
+            <!-- RODAPÉ DA PLACA -->
+            <div class="placa-footer">
+                PAGUE COM SEGURANÇA E RAPIDEZ ATRAVÉS DO SEU APLICATIVO BANCÁRIO
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+let payloadPixGlobal = "";
+
+function normalizarTexto(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+}
+
+function formatarCampoEMV(id, valor) {
+    return id + String(valor.length).padStart(2, "0") + valor;
+}
+
+function calcularCRC16(str) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < str.length; i++) {
+        crc ^= str.charCodeAt(i) << 8;
+        for (let j = 0; j < 8; j++) {
+            if (crc & 0x8000) {
+                crc = (crc << 1) ^ 0x1021;
+            } else {
+                crc <<= 1;
+            }
+            crc &= 0xFFFF;
+        }
+    }
+    return crc.toString(16).toUpperCase().padStart(4, "0");
+}
+
+function gerarPayload(chave, nome) {
+    nome = normalizarTexto(nome).substring(0, 25);
+    let merchant = formatarCampoEMV("00", "BR.GOV.BCB.PIX") + formatarCampoEMV("01", chave);
+    let payload = formatarCampoEMV("00", "01") +
+                  formatarCampoEMV("26", merchant) +
+                  formatarCampoEMV("52", "0000") +
+                  formatarCampoEMV("53", "986") +
+                  formatarCampoEMV("58", "BR") +
+                  formatarCampoEMV("59", nome) +
+                  formatarCampoEMV("60", "BRASIL") +
+                  formatarCampoEMV("62", formatarCampoEMV("05", "***")) +
+                  "6304";
+    return payload + calcularCRC16(payload);
+}
+
+function atualizarPlaca() {
+    const nome = document.getElementById("nome").value.trim();
+    const banco = document.getElementById("banco").value.trim();
+    const tipo = document.getElementById("tipo").value;
+    const chave = document.getElementById("chave").value.trim();
+
+    if (!nome || !chave) {
+        alert("Por favor, preencha o Nome e a Chave PIX.");
+        return;
+    }
+
+    document.getElementById("nomePlaca").textContent = nome;
+
+    const bancoContainer = document.getElementById("bancoContainer");
+    if (banco) {
+        document.getElementById("bancoPlaca").textContent = banco;
+        bancoContainer.style.display = "flex";
+    } else {
+        bancoContainer.style.display = "none";
+    }
+
+    document.getElementById("tipoPlaca").textContent = "Chave PIX • " + tipo;
+    document.getElementById("chavePlaca").textContent = chave;
+
+    payloadPixGlobal = gerarPayload(chave, nome);
+
+    const qrcodeDiv = document.getElementById("qrcode");
+    qrcodeDiv.innerHTML = "";
+
+    // Gerado em 600x600 px para nitidez extra na impressão
+    new QRCode(qrcodeDiv, {
+        text: payloadPixGlobal,
+        width: 600,
+        height: 600,
+        correctLevel: QRCode.CorrectLevel.H
+    });
+}
+
+function definirFormato(formato) {
+    const placa = document.getElementById("placa");
+    const btnHoriz = document.getElementById("btnHoriz");
+    const btnVert = document.getElementById("btnVert");
+
+    if (formato === "vertical") {
+        placa.classList.add("vertical");
+        btnVert.classList.add("active");
+        btnHoriz.classList.remove("active");
+    } else {
+        placa.classList.remove("vertical");
+        btnHoriz.classList.add("active");
+        btnVert.classList.remove("active");
+    }
+}
+
+function baixarImagem() {
+    const placa = document.getElementById("placa");
+
+    // Configuração para exportação em Ultra Alta Resolução (300+ DPI)
+    html2canvas(placa, {
+        scale: 5,
+        dpi: 300,
+        backgroundColor: null,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        imageTimeout: 0
+    }).then(canvas => {
+        const a = document.createElement("a");
+        a.download = "placa-pix.png";
+        a.href = canvas.toDataURL("image/png", 1.0);
+        a.click();
+    });
+}
+</script>
+
+</body>
+</html>
