@@ -549,6 +549,34 @@
 <script>
 let payloadPixGlobal = "";
 
+// Elementos do DOM
+const selectTipo = document.getElementById("tipo");
+const inputChave = document.getElementById("chave");
+
+// Escuta a mudança de tipo de chave para inserir/remover o +55
+selectTipo.addEventListener("change", function () {
+    if (this.value === "CELULAR") {
+        if (!inputChave.value.startsWith("+55")) {
+            const apenasNumeros = inputChave.value.replace(/\D/g, "");
+            inputChave.value = "+55" + apenasNumeros;
+        }
+    } else {
+        if (inputChave.value === "+55") {
+            inputChave.value = "";
+        }
+    }
+});
+
+// Garante que o +55 continue fixo no início enquanto o usuário digita no tipo Celular
+inputChave.addEventListener("input", function () {
+    if (selectTipo.value === "CELULAR") {
+        if (!this.value.startsWith("+55")) {
+            const numeros = this.value.replace(/\D/g, "");
+            this.value = "+55" + numeros;
+        }
+    }
+});
+
 function normalizarTexto(texto) {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
 }
@@ -591,8 +619,8 @@ function gerarPayload(chave, nome) {
 function atualizarPlaca() {
     const nome = document.getElementById("nome").value.trim();
     const banco = document.getElementById("banco").value.trim();
-    const tipo = document.getElementById("tipo").value;
-    const chave = document.getElementById("chave").value.trim();
+    const tipo = selectTipo.value;
+    const chave = inputChave.value.trim();
 
     if (!nome || !chave) {
         alert("Por favor, preencha o Nome e a Chave PIX.");
@@ -681,7 +709,7 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    btnInstall.style.display = 'flex';
+    if (btnInstall) btnInstall.style.display = 'flex';
 });
 
 function instalarApp() {
@@ -690,7 +718,7 @@ function instalarApp() {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-            btnInstall.style.display = 'none';
+            if (btnInstall) btnInstall.style.display = 'none';
         }
         deferredPrompt = null;
     });
