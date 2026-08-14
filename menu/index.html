@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faça seu Pedido - Lanchonete</title>
+  <style>
+    :root {
+      --primary: #e63946;
+      --primary-hover: #c82333;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #2b2d42;
+      --border: #e9ecef;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px 10px 40px 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+
+    header p {
+      color: #6c757d;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-info {
+      flex: 1;
+      padding-right: 10px;
+    }
+
+    .item-name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .item-desc {
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+
+    .item-price {
+      color: #28a745;
+      font-weight: bold;
+      margin-top: 4px;
+      font-size: 0.9rem;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-qty {
+      background-color: var(--border);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-qty:hover {
+      background-color: #dee2e6;
+    }
+
+    .qty-display {
+      font-weight: bold;
+      width: 20px;
+      text-align: center;
+    }
+
+    .total-bar {
+      position: sticky;
+      bottom: 10px;
+      background: #2b2d42;
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      margin-top: 20px;
+      margin-bottom: 25px;
+    }
+
+    .total-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.8;
+    }
+
+    .total-price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #2ecc71;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-top: 20px;
+      padding-top: 10px;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Modal Output */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .output-text {
+      background: #f1f3f5;
+      padding: 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 15px 0;
+      border: 1px solid #ced4da;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-whatsapp {
+      background-color: #25d366;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn-copy {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-close {
+      background-color: transparent;
+      border: 1px solid #ced4da;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1 id="restaurant-title">🍔 Lanchonete do Bairro</h1>
+    <p>Monte seu pedido e envie direto pelo WhatsApp</p>
+  </header>
+
+  <!-- Dados do Cliente -->
+  <div class="card">
+    <h2>1. Seus Dados</h2>
+    <div class="form-group">
+      <label for="client-name">Nome Completo *</label>
+      <input type="text" id="client-name" placeholder="Ex: Maria Silva">
+    </div>
+    <div class="form-group">
+      <label for="delivery-type">Forma de Entrega *</label>
+      <select id="delivery-type" onchange="toggleAddress()">
+        <option value="Entrega">Entrega em Domicílio</option>
+        <option value="Retirada">Retirada no Balcão</option>
+      </select>
+    </div>
+    <div id="address-section">
+      <div class="form-group">
+        <label for="client-address">Endereço de Entrega *</label>
+        <input type="text" id="client-address" placeholder="Rua, Número, Bairro e Complemento">
+      </div>
+      <div class="form-group">
+        <label for="client-reference">Ponto de Referência</label>
+        <input type="text" id="client-reference" placeholder="Ex: Próximo à padaria X / Portão azul">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="payment-method">Forma de Pagamento *</label>
+      <select id="payment-method">
+        <option value="PIX">PIX</option>
+        <option value="Cartão de Crédito/Débito (Maquininha)">Cartão (Crédito/Débito)</option>
+        <option value="Dinheiro">Dinheiro</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- O cardápio será injetado dinamicamente via JSON -->
+  <div id="menu-sections"></div>
+
+  <div class="card">
+    <h2>Observações Gerais</h2>
+    <div class="form-group">
+      <textarea id="order-obs" rows="3" placeholder="Ex: Tirar a cebola do X-Burguer, entregar sem buzinar..."></textarea>
+    </div>
+  </div>
+
+  <!-- Barra Fixa com Preço e Botão -->
+  <div class="total-bar">
+    <div>
+      <div class="total-title">Simulação Total:</div>
+      <div class="total-price" id="total-display">R$ 0,00</div>
+    </div>
+    <button class="btn-submit" onclick="generateOrder()">Gerar Pedido</button>
+  </div>
+
+  <!-- Rodapé -->
+  <footer>
+    © 2026 — Desenvolvido com IA por <a href="https://wa.me/+5574991162482" target="_blank" rel="noopener noreferrer">Rangel Viana</a>
+  </footer>
+</div>
+
+<!-- Modal com Texto do Pedido (Sem Preço) -->
+<div class="modal" id="order-modal">
+  <div class="modal-content">
+    <h2>Seu Pedido está Pronto!</h2>
+    <p style="font-size: 0.85rem; color: #6c757d;">
+      Abaixo está o resumo do seu pedido <strong>sem valores</strong>, pronto para ser enviado para a lanchonete:
+    </p>
+
+    <div class="output-text" id="output-text"></div>
+
+    <div class="modal-actions">
+      <a href="#" id="wa-link" target="_blank" class="btn-whatsapp">📲 Enviar no WhatsApp</a>
+      <button class="btn-copy" onclick="copyText()">Copiar</button>
+      <button class="btn-close" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =========================================================================
+  // JSON ÚNICO DE CONFIGURAÇÃO E CARDÁPIO
+  // =========================================================================
+  const MENU_DATA = {
+    "config": {
+      "restaurantName": "🍔 Lanchonete do Bairro",
+      "whatsappNumber": "5511999999999" // Formato: Código País (55) + DDD + Número
+    },
+    "categories": [
+      {
+        "id": "lanches",
+        "title": "2. Lanches",
+        "items": [
+          { "id": "l1", "name": "X-Burguer", "desc": "Pão, hambúrguer 150g, queijo prato e maionese da casa", "price": 22.00 },
+          { "id": "l2", "name": "X-Salada", "desc": "Pão, hambúrguer 150g, queijo, alface, tomate e maionese", "price": 25.00 },
+          { "id": "l3", "name": "X-Bacon", "desc": "Pão, hambúrguer 150g, queijo, bacon crocante e maionese", "price": 28.50 },
+          { "id": "l4", "name": "Porção de Batata Frita", "desc": "400g de batata frita com molho especial", "price": 18.00 }
+        ]
+      },
+      {
+        "id": "bebidas",
+        "title": "3. Bebidas",
+        "items": [
+          { "id": "b1", "name": "Coca-Cola Lata 350ml", "desc": "Gelada", "price": 6.00 },
+          { "id": "b2", "name": "Coca-Cola 2 Litros", "desc": "Gelada", "price": 14.00 },
+          { "id": "b3", "name": "Suco Natural de Laranja 500ml", "desc": "Sem açúcar aditivo", "price": 9.00 },
+          { "id": "b4", "name": "Água Mineral 500ml", "desc": "Sem gás", "price": 4.00 }
+        ]
+      }
+    ]
+  };
+
+  // Estado das quantidades
+  const quantities = {};
+
+  function initMenu() {
+    document.getElementById('restaurant-title').innerText = MENU_DATA.config.restaurantName;
+    const container = document.getElementById('menu-sections');
+    container.innerHTML = '';
+
+    MENU_DATA.categories.forEach(cat => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      let itemsHtml = '';
+      cat.items.forEach(item => {
+        quantities[item.id] = 0;
+        itemsHtml += `
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">${item.name}</div>
+              <div class="item-desc">${item.desc}</div>
+              <div class="item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</div>
+            </div>
+            <div class="qty-controls">
+              <button class="btn-qty" onclick="updateQty('${item.id}', -1)">-</button>
+              <span class="qty-display" id="qty-${item.id}">0</span>
+              <button class="btn-qty" onclick="updateQty('${item.id}', 1)">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      card.innerHTML = `<h2>${cat.title}</h2>${itemsHtml}`;
+      container.appendChild(card);
+    });
+  }
+
+  function updateQty(id, change) {
+    const current = quantities[id] || 0;
+    const updated = Math.max(0, current + change);
+    quantities[id] = updated;
+
+    document.getElementById(`qty-${id}`).innerText = updated;
+    calculateTotal();
+  }
+
+  function calculateTotal() {
+    let total = 0;
+    MENU_DATA.categories.forEach(cat => {
+      cat.items.forEach(item => {
+        const qty = quantities[item.id] || 0;
+        total += qty * item.price;
+      });
+    });
+
+    document.getElementById('total-display').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+  }
+
+  function toggleAddress() {
+    const deliveryType = document.getElementById('delivery-type').value;
+    const addressSection = document.getElementById('address-section');
+    addressSection.style.display = (deliveryType === 'Retirada') ? 'none' : 'block';
+  }
+
+  function generateOrder() {
+    const name = document.getElementById('client-name').value.trim();
+    const deliveryType = document.getElementById('delivery-type').value;
+    const address = document.getElementById('client-address').value.trim();
+    const reference = document.getElementById('client-reference').value.trim();
+    const payment = document.getElementById('payment-method').value;
+    const obs = document.getElementById('order-obs').value.trim();
+
+    if (!name) {
+      alert("Por favor, preencha o seu nome.");
+      return;
+    }
+
+    if (deliveryType === 'Entrega' && !address) {
+      alert("Por favor, informe o endereço de entrega.");
+      return;
+    }
+
+    // Coleta dos itens selecionados
+    const selectedItems = [];
+    MENU_DATA.categories.forEach(cat => {
+      cat.items.forEach(item => {
+        const qty = quantities[item.id] || 0;
+        if (qty > 0) {
+          selectedItems.push(`• ${qty}x ${item.name}`);
+        }
+      });
+    });
+
+    if (selectedItems.length === 0) {
+      alert("Selecione pelo menos um item para realizar o pedido.");
+      return;
+    }
+
+    // Montagem do Texto SEM PREÇOS
+    let text = `*NOVO PEDIDO* 🍔\n\n`;
+    text += `*Cliente:* ${name}\n`;
+    text += `*Tipo:* ${deliveryType}\n`;
+    if (deliveryType === 'Entrega') {
+      text += `*Endereço:* ${address}\n`;
+      if (reference) {
+        text += `*Ponto de Referência:* ${reference}\n`;
+      }
+    }
+    text += `*Forma de Pagamento:* ${payment}\n\n`;
+    text += `*ITENS DO PEDIDO:*\n`;
+    text += selectedItems.join('\n');
+
+    if (obs) {
+      text += `\n\n*Observações:*\n${obs}`;
+    }
+
+    // Exibe no Modal
+    document.getElementById('output-text').innerText = text;
+    
+    // Configura o link direto do WhatsApp usando a config do JSON
+    const encodedText = encodeURIComponent(text);
+    document.getElementById('wa-link').href = `https://wa.me/${MENU_DATA.config.whatsappNumber}?text=${encodedText}`;
+
+    document.getElementById('order-modal').style.display = 'flex';
+  }
+
+  function copyText() {
+    const text = document.getElementById('output-text').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Texto copiado para a área de transferência!");
+    });
+  }
+
+  function closeModal() {
+    document.getElementById('order-modal').style.display = 'none';
+  }
+
+  window.onload = initMenu;
+</script>
+
+</body>
+</html>
