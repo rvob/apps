@@ -18,26 +18,26 @@
 
     <style>
         /* =========================================================
-           DESIGN SYSTEM & VARIÁVEIS (CLEAN & MODERNO)
+           DESIGN SYSTEM & VARIÁVEIS (TEMA CLARO & MODERNO)
         ========================================================= */
         :root {
-            --bg-body: #0b0f17;
-            --card-bg: #151c28;
-            --card-border: #232d3f;
-            --input-bg: #0d121d;
-            --text-main: #f1f5f9;
-            --text-muted: #8e9bb0;
-            --accent-teal: #2dd4bf;
-            --accent-teal-glow: rgba(45, 212, 191, 0.15);
+            --bg-body: #f1f5f9;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --input-bg: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-teal: #0d9488;
+            --accent-teal-glow: rgba(13, 148, 136, 0.1);
             
             /* Cores Fidedignas às Cédulas do Real (BRL) */
             --tag-2: #2563eb;   /* Azul (Tartaruga) */
             --tag-5: #9333ea;   /* Púrpura / Violeta (Garça) */
             --tag-10: #e11d48;  /* Vermelho / Carmin (Arara) */
-            --tag-20: #f59e0b;  /* Amarelo Ocre / Alaranjado (Mico-leão-dourado) */
+            --tag-20: #d97706;  /* Amarelo Ocre / Alaranjado (Mico-leão-dourado) */
             --tag-50: #b45309;  /* Marrom / Dourado (Onça-pintada) */
             --tag-100: #0284c7; /* Azul-Turquesa (Garoupa) */
-            --tag-200: #6b7280; /* Cinza-Sépia / Terroso (Lobo-guará) */
+            --tag-200: #4b5563; /* Cinza-Sépia / Terroso (Lobo-guará) */
         }
 
         * {
@@ -51,11 +51,12 @@
             background: var(--bg-body);
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: var(--text-main);
-            padding: 24px 16px;
+            padding: 32px 16px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            gap: 20px;
         }
 
         /* =========================================================
@@ -68,8 +69,7 @@
             border: 1px solid var(--card-border);
             border-radius: 24px;
             padding: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
         }
 
         /* HEADER */
@@ -101,12 +101,13 @@
             font-size: 18px;
             font-weight: 800;
             letter-spacing: -0.3px;
+            color: var(--text-main);
         }
 
         .btn-reset {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #f87171;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
             padding: 8px 14px;
             border-radius: 10px;
             font-size: 12px;
@@ -119,14 +120,14 @@
         }
 
         .btn-reset:hover {
-            background: rgba(239, 68, 68, 0.2);
+            background: #fee2e2;
             transform: translateY(-1px);
         }
 
         /* HERO TOTAL BAR */
         .total-card {
-            background: linear-gradient(135deg, rgba(45, 212, 191, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%);
-            border: 1px solid rgba(45, 212, 191, 0.3);
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(241, 245, 249, 0.6) 100%);
+            border: 1px solid rgba(13, 148, 136, 0.2);
             border-radius: 18px;
             padding: 18px 20px;
             margin-bottom: 20px;
@@ -152,7 +153,7 @@
         .total-amount {
             font-size: 30px;
             font-weight: 900;
-            color: #ffffff;
+            color: var(--text-main);
             letter-spacing: -0.5px;
             line-height: 1.1;
         }
@@ -161,7 +162,7 @@
             font-size: 12px;
             font-weight: 700;
             color: var(--accent-teal);
-            background: rgba(45, 212, 191, 0.15);
+            background: var(--accent-teal-glow);
             padding: 6px 12px;
             border-radius: 20px;
             display: flex;
@@ -179,7 +180,7 @@
         }
 
         .note-row {
-            background: rgba(13, 18, 29, 0.6);
+            background: #ffffff;
             border: 1px solid var(--card-border);
             border-radius: 14px;
             padding: 10px 14px;
@@ -191,11 +192,11 @@
         }
 
         .note-row:focus-within, .note-row:hover {
-            border-color: rgba(45, 212, 191, 0.4);
-            background: rgba(13, 18, 29, 0.9);
+            border-color: rgba(13, 148, 136, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
-        /* Badge da Nota com Sombreamento Elegante */
+        /* Badge da Nota */
         .note-tag {
             font-size: 13px;
             font-weight: 800;
@@ -205,7 +206,7 @@
             color: #ffffff;
             display: inline-block;
             width: 100%;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .tag-2 { background: var(--tag-2); }
@@ -230,8 +231,8 @@
         .btn-step {
             width: 28px;
             height: 28px;
-            border: none;
-            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            background: #ffffff;
             color: var(--text-main);
             border-radius: 7px;
             font-size: 14px;
@@ -246,7 +247,8 @@
 
         .btn-step:hover {
             background: var(--accent-teal);
-            color: #000000;
+            border-color: var(--accent-teal);
+            color: #ffffff;
         }
 
         .btn-step:active {
@@ -259,7 +261,7 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #ffffff;
+            color: var(--text-main);
             font-size: 14px;
             font-weight: 700;
             text-align: center;
@@ -287,10 +289,10 @@
         }
 
         /* =========================================================
-           RODAPÉ
+           RODAPÉ (AJUSTADO E RESPONSIVO)
         ========================================================= */
         footer {
-            margin-top: 24px;
+            margin-top: 0;
             text-align: center;
             font-size: 12px;
             color: var(--text-muted);
@@ -307,11 +309,15 @@
 
         footer a:hover {
             text-decoration: underline;
-            color: #ffffff;
+            color: var(--text-main);
         }
 
-        /* Responsividade para telas muito pequenas */
+        /* Responsividade para telas menores */
         @media (max-width: 440px) {
+            body {
+                padding: 16px;
+                gap: 16px;
+            }
             .app-card {
                 padding: 16px;
                 border-radius: 20px;
