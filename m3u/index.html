@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerador de Links</title>
+  <title>Links M3U</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,16 +14,11 @@
     :root {
       --bg: #08090d;
       --card-bg: rgba(255, 255, 255, 0.03);
-      --input-bg: rgba(0, 0, 0, 0.3);
-      --group-bg: rgba(255, 255, 255, 0.02);
+      --input-bg: rgba(0, 0, 0, 0.35);
       --border-color: rgba(255, 255, 255, 0.1);
-      --accent-color: #7b1bc2;
-      --accent-hover: #6914b4;
-      --btn-blue: #0796d5;
-      --btn-blue-hover: #045d9a;
       --text-main: #ffffff;
       --text-muted: #9da3b0;
-      --radius: 16px;
+      --radius: 14px;
     }
 
     * {
@@ -36,7 +31,7 @@
       background: radial-gradient(circle at 50% -10%, rgba(110, 30, 180, .20), transparent 40%), var(--bg);
       color: var(--text-main);
       font-family: 'Poppins', sans-serif;
-      padding: 28px 18px 20px;
+      padding: 16px 12px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -44,10 +39,10 @@
 
     .container {
       width: 100%;
-      max-width: 800px;
+      max-width: 600px;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 28px;
+      padding: 16px;
       border-radius: var(--radius);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
       height: fit-content;
@@ -55,41 +50,43 @@
 
     header {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
     .logo {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 58px;
-      height: 58px;
-      margin-bottom: 12px;
-      border-radius: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #7b1bc2, #3c0870);
-      box-shadow: 0 8px 25px rgba(105, 20, 180, .35);
-      font-size: 24px;
+      box-shadow: 0 4px 15px rgba(105, 20, 180, .35);
+      font-size: 16px;
     }
 
     h1 {
-      font-size: clamp(22px, 4vw, 30px);
+      font-size: 20px;
       font-weight: 700;
       letter-spacing: -.5px;
-      color: var(--text-main);
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 24px;
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     label {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       display: block;
     }
 
@@ -98,37 +95,30 @@
       background-color: var(--input-bg);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 0.95rem;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
       font-family: 'Poppins', sans-serif;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s;
     }
 
     input:focus {
       border-color: #b96df2;
-      box-shadow: 0 0 0 3px rgba(185, 109, 242, 0.2);
     }
 
     .btn {
       width: 100%;
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 1rem;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, filter 0.2s;
       background: linear-gradient(135deg, #7414a9, #4c0878);
       color: #ffffff;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
-      box-shadow: 0 10px 25px rgba(105, 20, 180, .4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, .25);
     }
 
     .btn:active {
@@ -136,102 +126,92 @@
     }
 
     #resultado {
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .grupo-site {
-      background-color: var(--group-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 18px;
+      margin-top: 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
+    .grupo-site {
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
     .titulo-site {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: #b96df2;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border-color);
+      letter-spacing: 0.03em;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .linha {
       background-color: var(--input-bg);
-      padding: 12px 14px;
-      border-radius: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 8px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .label-tipo {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-      display: block;
     }
 
     .texto-container {
       flex: 1;
-      overflow: hidden;
+      min-width: 0; /* Permite o truncamento com ... */
+    }
+
+    .label-tipo {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      line-height: 1;
+      margin-bottom: 2px;
+      display: block;
     }
 
     .texto-link {
       font-family: monospace;
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       color: #e2e8f0;
-      word-break: break-all;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; /* Corta o link longo no celular com ... */
     }
 
     .copiar-btn {
       background: linear-gradient(135deg, #0796d5, #045d9a);
       color: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-size: 0.85rem;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
-      transition: transform 0.2s, filter 0.2s;
-    }
-
-    .copiar-btn:hover {
-      filter: brightness(1.15);
-      transform: translateY(-1px);
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .copiar-btn.copiado {
       background: linear-gradient(135deg, #10b981, #047857);
     }
 
-    @media (max-width: 640px) {
-      .container {
-        padding: 18px;
-      }
-
-      .linha {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .copiar-btn {
-        width: 100%;
-        text-align: center;
+    @media (max-width: 380px) {
+      .form-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -242,22 +222,22 @@
       <div class="logo">
         <i class="fa-solid fa-link"></i>
       </div>
-      <h1>Gerador de Links</h1>
+      <h1>Links M3U</h1>
     </header>
 
-    <div class="form-group">
+    <div class="form-grid">
       <div>
         <label for="usuario">Usuário</label>
-        <input type="text" id="usuario" placeholder="Digite o usuário" />
+        <input type="text" id="usuario" placeholder="Usuário" />
       </div>
 
       <div>
         <label for="senha">Senha</label>
-        <input type="text" id="senha" placeholder="Digite a senha" />
+        <input type="text" id="senha" placeholder="Senha" />
       </div>
     </div>
 
-    <button class="btn" onclick="gerarLinks()">Gerar Lista</button>
+    <button class="btn" onclick="gerarLinks()">Gerar Links</button>
 
     <div id="resultado"></div>
   </div>
@@ -287,7 +267,6 @@
       sites.forEach(site => {
         const siteLimpo = site.replace(/\/$/, '');
 
-        // Criar o cartão do site
         const grupo = document.createElement('div');
         grupo.className = 'grupo-site';
 
@@ -297,7 +276,7 @@
         grupo.appendChild(titulo);
 
         const itens = [
-          { tipo: 'LINK M3U', url: `http://${siteLimpo}/get.php?username=${usuario}&password=${senha}&type=m3u_plus&output=ts` },
+          { tipo: 'M3U', url: `http://${siteLimpo}/get.php?username=${usuario}&password=${senha}&type=m3u_plus&output=ts` },
           { tipo: 'EPG', url: `http://${siteLimpo}/epg/${usuario}/${senha}` }
         ];
 
@@ -308,7 +287,7 @@
           linha.innerHTML = `
             <div class="texto-container">
               <span class="label-tipo">${item.tipo}</span>
-              <div class="texto-link">${item.url}</div>
+              <div class="texto-link" title="${item.url}">${item.url}</div>
             </div>
             <button class="copiar-btn"><i class="fa-regular fa-copy"></i> Copiar</button>
           `;
@@ -317,7 +296,7 @@
 
           botao.onclick = () => {
             navigator.clipboard.writeText(item.url);
-            botao.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+            botao.innerHTML = '<i class="fa-solid fa-check"></i> OK!';
             botao.classList.add('copiado');
 
             setTimeout(() => {
