@@ -30,14 +30,14 @@
             --accent-teal: #2dd4bf;
             --accent-teal-glow: rgba(45, 212, 191, 0.15);
             
-            /* Cores de Acento Suaves por Nota */
-            --tag-2: #3b82f6;
-            --tag-5: #a855f7;
-            --tag-10: #f43f5e;
-            --tag-20: #f59e0b;
-            --tag-50: #d97706;
-            --tag-100: #06b6d4;
-            --tag-200: #84cc16;
+            /* Cores Fidedignas às Cédulas do Real (BRL) */
+            --tag-2: #2563eb;   /* Azul (Tartaruga) */
+            --tag-5: #9333ea;   /* Púrpura / Violeta (Garça) */
+            --tag-10: #e11d48;  /* Vermelho / Carmin (Arara) */
+            --tag-20: #f59e0b;  /* Amarelo Ocre / Alaranjado (Mico-leão-dourado) */
+            --tag-50: #b45309;  /* Marrom / Dourado (Onça-pintada) */
+            --tag-100: #0284c7; /* Azul-Turquesa (Garoupa) */
+            --tag-200: #6b7280; /* Cinza-Sépia / Terroso (Lobo-guará) */
         }
 
         * {
@@ -195,16 +195,17 @@
             background: rgba(13, 18, 29, 0.9);
         }
 
-        /* Badge da Nota */
+        /* Badge da Nota com Sombreamento Elegante */
         .note-tag {
             font-size: 13px;
             font-weight: 800;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 8px;
             text-align: center;
             color: #ffffff;
             display: inline-block;
-            width: fit-content;
+            width: 100%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .tag-2 { background: var(--tag-2); }
@@ -316,7 +317,7 @@
                 border-radius: 20px;
             }
             .note-row {
-                grid-template-columns: 70px 1fr 90px;
+                grid-template-columns: 75px 1fr 90px;
                 padding: 8px 10px;
                 gap: 8px;
             }
@@ -325,6 +326,7 @@
             }
             .note-tag {
                 font-size: 11px;
+                padding: 4px 6px;
             }
             .note-subtotal {
                 font-size: 13px;
@@ -442,7 +444,7 @@
         </section>
     </main>
 
-    <!-- RODAPÉ SOLICITADO -->
+    <!-- RODAPÉ -->
     <footer>
         © 2026 — Desenvolvido com IA por <a href="https://wa.me/+5574991162482" target="_blank" rel="noopener noreferrer">Rangel Viana</a>
     </footer>
