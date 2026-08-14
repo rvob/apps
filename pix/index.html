@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#32bcad">
     
     <title>Gerador PIX</title>
+    
+    <!-- Configurações PWA -->
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="https://user-images.githubusercontent.com/741969/99538133-492fe280-298b-11eb-81a2-66779343e064.png">
+
     <!-- Fonte Inter para Legibilidade Superior -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,6 +172,12 @@
 
         .btn-primary { background: var(--pix-primary); color: #0f1115; }
         .btn-outline { background: #ffffff; color: #0f1115; }
+        .btn-install { 
+            background: transparent; 
+            border: 1px solid var(--pix-primary); 
+            color: var(--pix-primary); 
+            display: none; /* Exibido via JS se instalável */
+        }
 
         .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
         .btn:active { transform: translateY(0); }
@@ -482,6 +493,7 @@
         <div class="action-buttons">
             <button class="btn btn-primary" onclick="atualizarPlaca()">Gerar Placa</button>
             <button class="btn btn-outline" onclick="baixarImagem()">Baixar Imagem</button>
+            <button id="btnInstall" class="btn btn-install" onclick="instalarApp()">📲 Instalar Aplicação</button>
         </div>
     </div>
 
@@ -491,7 +503,7 @@
             
             <!-- CABEÇALHO DA PLACA -->
             <div class="placa-header">
-                <img class="logo-pix" src="logo.png" alt="Pix Logo" crossorigin="anonymous">
+                <img class="logo-pix" src="https://user-images.githubusercontent.com/741969/99538133-492fe280-298b-11eb-81a2-66779343e064.png" alt="Pix Logo" crossorigin="anonymous">
                 <span class="header-tag">Pagamento Instantâneo</span>
             </div>
 
@@ -648,6 +660,40 @@ function baixarImagem() {
         a.download = "placa-pix.png";
         a.href = canvas.toDataURL("image/png", 1.0);
         a.click();
+    });
+}
+
+/* =========================================================
+   SUPORTE A PWA & OFFLINE
+========================================================= */
+let deferredPrompt;
+const btnInstall = document.getElementById('btnInstall');
+
+// Registro do Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW Registrado com sucesso!'))
+            .catch(err => console.log('Erro ao registrar SW:', err));
+    });
+}
+
+// Capturar evento para o botão de Instalação
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    btnInstall.style.display = 'flex';
+});
+
+function instalarApp() {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+            btnInstall.style.display = 'none';
+        }
+        deferredPrompt = null;
     });
 }
 </script>

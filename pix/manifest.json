@@ -1,0 +1,20 @@
+{
+  "name": "Gerador de Placa PIX",
+  "short_name": "Gerador PIX",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#121316",
+  "theme_color": "#32bcad",
+  "icons": [
+    {
+      "src": "https://user-images.githubusercontent.com/741969/99538133-492fe280-298b-11eb-81a2-66779343e064.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://user-images.githubusercontent.com/741969/99538133-492fe280-298b-11eb-81a2-66779343e064.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
