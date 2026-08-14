@@ -328,7 +328,7 @@
             text-align: center;
         }
 
-        /* RODAPÉ DA PLACA (AJUSTADO) */
+        /* RODAPÉ DA PLACA */
         .placa-footer {
             background: #f1f5f9;
             padding: 18px 24px 22px 24px;
@@ -345,7 +345,7 @@
         }
 
         /* =========================================================
-           FORMATO VERTICAL (AJUSTADO)
+           FORMATO VERTICAL
         ========================================================= */
         .placa.vertical {
             max-width: 440px;
@@ -562,30 +562,6 @@ let payloadPixGlobal = "";
 const selectTipo = document.getElementById("tipo");
 const inputChave = document.getElementById("chave");
 
-// Escuta a mudança de tipo de chave para inserir/remover o +55
-selectTipo.addEventListener("change", function () {
-    if (this.value === "CELULAR") {
-        if (!inputChave.value.startsWith("+55")) {
-            const apenasNumeros = inputChave.value.replace(/\D/g, "");
-            inputChave.value = "+55" + apenasNumeros;
-        }
-    } else {
-        if (inputChave.value === "+55") {
-            inputChave.value = "";
-        }
-    }
-});
-
-// Garante que o +55 continue fixo no início enquanto o usuário digita no tipo Celular
-inputChave.addEventListener("input", function () {
-    if (selectTipo.value === "CELULAR") {
-        if (!this.value.startsWith("+55")) {
-            const numeros = this.value.replace(/\D/g, "");
-            this.value = "+55" + numeros;
-        }
-    }
-});
-
 function normalizarTexto(texto) {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
 }
@@ -629,9 +605,9 @@ function atualizarPlaca() {
     const nome = document.getElementById("nome").value.trim();
     const banco = document.getElementById("banco").value.trim();
     const tipo = selectTipo.value;
-    const chave = inputChave.value.trim();
+    const chaveDigitada = inputChave.value.trim();
 
-    if (!nome || !chave) {
+    if (!nome || !chaveDigitada) {
         alert("Por favor, preencha o Nome e a Chave PIX.");
         return;
     }
@@ -647,9 +623,19 @@ function atualizarPlaca() {
     }
 
     document.getElementById("tipoPlaca").textContent = "Chave PIX • " + tipo;
-    document.getElementById("chavePlaca").textContent = chave;
+    
+    // Exibe exatamente o que foi digitado no card visual
+    document.getElementById("chavePlaca").textContent = chaveDigitada;
 
-    payloadPixGlobal = gerarPayload(chave, nome);
+    // Prepara a chave do QR Code (se for CELULAR, garante o +55 internamente)
+    let chaveQrCode = chaveDigitada;
+    if (tipo === "CELULAR") {
+        const apenasNumeros = chaveDigitada.replace(/\D/g, "");
+        chaveQrCode = "+55" + apenasNumeros;
+    }
+
+    // Gera o código PIX usando a chave tratada com +55
+    payloadPixGlobal = gerarPayload(chaveQrCode, nome);
 
     const qrcodeDiv = document.getElementById("qrcode");
     qrcodeDiv.innerHTML = "";
