@@ -4,10 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0d9488">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Cédulas BRL">
     
     <title>Calculadora de Cédulas — Real (BRL)</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Favicon Inline SVG -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='160' fill='%230d9488' fill-opacity='0.15'/><g transform='translate(96, 96) scale(13.333)' stroke='%230d9488' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'><rect width='20' height='12' x='2' y='6' rx='2'/><circle cx='12' cy='12' r='2'/><path d='M6 12h.01M18 12h.01'/></g></svg>">
     
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
     <!-- Fonte Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,14 +39,14 @@
             --accent-teal: #0d9488;
             --accent-teal-glow: rgba(13, 148, 136, 0.1);
             
-            /* Cores Fidedignas às Cédulas do Real (BRL) */
-            --tag-2: #2563eb;   /* Azul (Tartaruga) */
-            --tag-5: #9333ea;   /* Púrpura / Violeta (Garça) */
-            --tag-10: #e11d48;  /* Vermelho / Carmin (Arara) */
-            --tag-20: #d97706;  /* Amarelo Ocre / Alaranjado (Mico-leão-dourado) */
-            --tag-50: #b45309;  /* Marrom / Dourado (Onça-pintada) */
-            --tag-100: #0284c7; /* Azul-Turquesa (Garoupa) */
-            --tag-200: #4b5563; /* Cinza-Sépia / Terroso (Lobo-guará) */
+            /* Cores Cédulas */
+            --tag-2: #2563eb;
+            --tag-5: #9333ea;
+            --tag-10: #e11d48;
+            --tag-20: #d97706;
+            --tag-50: #b45309;
+            --tag-100: #0284c7;
+            --tag-200: #4b5563;
         }
 
         * {
@@ -59,9 +68,6 @@
             gap: 20px;
         }
 
-        /* =========================================================
-           CONTAINER PRINCIPAL COMPACTO
-        ========================================================= */
         .app-card {
             width: 100%;
             max-width: 520px;
@@ -72,7 +78,6 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
         }
 
-        /* HEADER */
         .app-header {
             display: flex;
             align-items: center;
@@ -104,6 +109,33 @@
             color: var(--text-main);
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* BOTÃO INSTALAR PWA */
+        .btn-install {
+            background: var(--accent-teal);
+            border: 1px solid var(--accent-teal);
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: none; /* Escondido por padrão, aparece apenas via JS quando disponível */
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-install:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
         .btn-reset {
             background: #fef2f2;
             border: 1px solid #fecaca;
@@ -124,7 +156,6 @@
             transform: translateY(-1px);
         }
 
-        /* HERO TOTAL BAR */
         .total-card {
             background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(241, 245, 249, 0.6) 100%);
             border: 1px solid rgba(13, 148, 136, 0.2);
@@ -170,9 +201,6 @@
             gap: 6px;
         }
 
-        /* =========================================================
-           TABELA / LISTA COMPACTA DE NOTAS
-        ========================================================= */
         .notes-list {
             display: flex;
             flex-direction: column;
@@ -196,7 +224,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
-        /* Badge da Nota */
         .note-tag {
             font-size: 13px;
             font-weight: 800;
@@ -217,7 +244,6 @@
         .tag-100 { background: var(--tag-100); }
         .tag-200 { background: var(--tag-200); }
 
-        /* Controles de Entrada (stepper compacto) */
         .stepper {
             display: flex;
             align-items: center;
@@ -275,7 +301,6 @@
             margin: 0;
         }
 
-        /* Subtotal da Linha */
         .note-subtotal {
             text-align: right;
             font-size: 14px;
@@ -288,9 +313,6 @@
             color: var(--accent-teal);
         }
 
-        /* =========================================================
-           RODAPÉ (AJUSTADO E RESPONSIVO)
-        ========================================================= */
         footer {
             margin-top: 0;
             text-align: center;
@@ -312,7 +334,6 @@
             color: var(--text-main);
         }
 
-        /* Responsividade para telas menores */
         @media (max-width: 440px) {
             body {
                 padding: 16px;
@@ -348,13 +369,24 @@
         <header class="app-header">
             <div class="app-title">
                 <div class="icon-box">
-                    <i data-lucide="banknote" style="width:20px; height:20px;"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="12" x="2" y="6" rx="2"/>
+                        <circle cx="12" cy="12" r="2"/>
+                        <path d="M6 12h.01M18 12h.01"/>
+                    </svg>
                 </div>
                 <h1>Cédulas BRL</h1>
             </div>
-            <button class="btn-reset" onclick="resetar()">
-                <i data-lucide="rotate-ccw" style="width:14px; height:14px;"></i> Zera
-            </button>
+            
+            <div class="header-actions">
+                <!-- Botão de Instalação (PWA) -->
+                <button id="btnInstall" class="btn-install" onclick="instalarPWA()">
+                    <i data-lucide="download" style="width:14px; height:14px;"></i> Instalar
+                </button>
+                <button class="btn-reset" onclick="resetar()">
+                    <i data-lucide="rotate-ccw" style="width:14px; height:14px;"></i> Zera
+                </button>
+            </div>
         </header>
 
         <!-- BANNER TOTAL -->
@@ -510,6 +542,41 @@
         }
 
         lucide.createIcons();
+
+        /* =========================================================
+           LÓGICA PWA (REGISTRO SW & PROMPT DE INSTALAÇÃO)
+        ========================================================= */
+        let deferredPrompt;
+        const btnInstall = document.getElementById('btnInstall');
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('Falha ao registrar SW:', err);
+                });
+            });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            btnInstall.style.display = 'flex';
+        });
+
+        async function instalarPWA() {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                btnInstall.style.display = 'none';
+            }
+            deferredPrompt = null;
+        }
+
+        window.addEventListener('appinstalled', () => {
+            btnInstall.style.display = 'none';
+            deferredPrompt = null;
+        });
     </script>
 </body>
 
