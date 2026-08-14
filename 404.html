@@ -6,157 +6,117 @@
   <title>404 - Página Não Encontrada</title>
   <style>
     :root {
-      --bg: #0d0f12;
+      --bg: #090a0f;
       --card-bg: rgba(255, 255, 255, 0.03);
       --card-border: rgba(255, 255, 255, 0.08);
-      --card-hover-bg: rgba(255, 255, 255, 0.07);
-      --card-hover-border: rgba(59, 130, 246, 0.5);
       --text: #f3f4f6;
       --text-muted: #9ca3af;
-      --accent: #3b82f6;
+      --accent-glow: rgba(239, 68, 68, 0.15);
+      --accent-color: #ef4444;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text);
-      /* Usa 100dvh para travar exatamente na tela do celular sem barras de rolagem */
-      height: 100vh;
-      height: 100dvh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 20px;
       overflow: hidden;
+      position: relative;
+    }
+
+    /* Elementos visuais de fundo */
+    .bg-glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
     }
 
     .container {
-      max-width: 400px;
+      position: relative;
+      z-index: 1;
+      max-width: 440px;
       width: 100%;
       text-align: center;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
+      padding: 40px 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .icon-wrapper {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 50%;
+      margin-bottom: 20px;
+      color: var(--accent-color);
     }
 
     .error-code {
-      font-size: clamp(3.5rem, 12vw, 5.5rem);
+      font-size: clamp(3rem, 10vw, 4.5rem);
       font-weight: 800;
-      letter-spacing: -2px;
-      background: linear-gradient(180deg, #ffffff 0%, #4b5563 100%);
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #ffffff 0%, #6b7280 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      line-height: 1;
-      margin-bottom: 6px;
     }
 
     h1 {
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
+      color: var(--text);
     }
 
     p {
       color: var(--text-muted);
-      font-size: 0.85rem;
-      line-height: 1.35;
-      margin-bottom: 20px;
-    }
-
-    .links-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .nav-button {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      background-color: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: all 0.25s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .nav-button:hover, .nav-button:active {
-      border-color: var(--card-hover-border);
-      background-color: var(--card-hover-bg);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .arrow {
-      color: var(--text-muted);
-      transition: transform 0.25s ease, color 0.25s ease;
-    }
-
-    .nav-button:hover .arrow {
-      transform: translateX(4px);
-      color: var(--accent);
-    }
-
-    footer {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-align: center;
-      padding: 8px 0;
-      width: 100%;
-    }
-
-    footer a {
-      color: var(--text-muted);
-      text-decoration: underline;
-      transition: color 0.2s ease;
-    }
-
-    footer a:hover {
-      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
 
+  <div class="bg-glow"></div>
+
   <main class="container">
+    <div class="icon-wrapper">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </div>
+    
     <div class="error-code">404</div>
-    <h1>Página não encontrada</h1>
-    <p>O link que você tentou acessar não existe ou foi movido. Escolha uma das opções abaixo para continuar:</p>
-
-    <nav class="links-grid">
-      <a href="/pix" class="nav-button">
-        <span>⚡ Gerador Pix</span>
-        <span class="arrow">→</span>
-      </a>
-
-      <a href="/" class="nav-button">
-        <span>📱 Central de Apps</span>
-        <span class="arrow">→</span>
-      </a>
-
-      <a href="/m3u" class="nav-button">
-        <span>📺 Links M3U</span>
-        <span class="arrow">→</span>
-      </a>
-    </nav>
+    <h1>Página Não Encontrada</h1>
+    <p>A página que você está procurando não existe, foi removida ou o endereço digitado está incorreto.</p>
   </main>
-
-  <footer>
-© 2026 — Desenvolvido com IA por <a href="https://wa.me/+5574991162482" target="_blank" rel="noopener noreferrer">Rangel Viana</a>  </footer>
-
 
 </body>
 </html>
