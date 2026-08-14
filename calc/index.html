@@ -1,1 +1,508 @@
-as
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <title>Calculadora de Cédulas — Real (BRL)</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* =========================================================
+           DESIGN SYSTEM & VARIÁVEIS (CLEAN & MODERNO)
+        ========================================================= */
+        :root {
+            --bg-body: #0b0f17;
+            --card-bg: #151c28;
+            --card-border: #232d3f;
+            --input-bg: #0d121d;
+            --text-main: #f1f5f9;
+            --text-muted: #8e9bb0;
+            --accent-teal: #2dd4bf;
+            --accent-teal-glow: rgba(45, 212, 191, 0.15);
+            
+            /* Cores de Acento Suaves por Nota */
+            --tag-2: #3b82f6;
+            --tag-5: #a855f7;
+            --tag-10: #f43f5e;
+            --tag-20: #f59e0b;
+            --tag-50: #d97706;
+            --tag-100: #06b6d4;
+            --tag-200: #84cc16;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-body);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-main);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* =========================================================
+           CONTAINER PRINCIPAL COMPACTO
+        ========================================================= */
+        .app-card {
+            width: 100%;
+            max-width: 520px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        /* HEADER */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-title .icon-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--accent-teal-glow);
+            color: var(--accent-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .btn-reset {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* HERO TOTAL BAR */
+        .total-card {
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%);
+            border: 1px solid rgba(45, 212, 191, 0.3);
+            border-radius: 18px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .total-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .total-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+
+        .total-amount {
+            font-size: 30px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        .notes-counter {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-teal);
+            background: rgba(45, 212, 191, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* =========================================================
+           TABELA / LISTA COMPACTA DE NOTAS
+        ========================================================= */
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .note-row {
+            background: rgba(13, 18, 29, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 10px 14px;
+            display: grid;
+            grid-template-columns: 85px 1fr 110px;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .note-row:focus-within, .note-row:hover {
+            border-color: rgba(45, 212, 191, 0.4);
+            background: rgba(13, 18, 29, 0.9);
+        }
+
+        /* Badge da Nota */
+        .note-tag {
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 8px;
+            text-align: center;
+            color: #ffffff;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .tag-2 { background: var(--tag-2); }
+        .tag-5 { background: var(--tag-5); }
+        .tag-10 { background: var(--tag-10); }
+        .tag-20 { background: var(--tag-20); }
+        .tag-50 { background: var(--tag-50); }
+        .tag-100 { background: var(--tag-100); }
+        .tag-200 { background: var(--tag-200); }
+
+        /* Controles de Entrada (stepper compacto) */
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 3px;
+        }
+
+        .btn-step {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .btn-step:hover {
+            background: var(--accent-teal);
+            color: #000000;
+        }
+
+        .btn-step:active {
+            transform: scale(0.92);
+        }
+
+        .input-qty {
+            width: 100%;
+            min-width: 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            font-family: inherit;
+            -moz-appearance: textfield;
+        }
+
+        .input-qty::-webkit-outer-spin-button,
+        .input-qty::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Subtotal da Linha */
+        .note-subtotal {
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .note-subtotal.active {
+            color: var(--accent-teal);
+        }
+
+        /* =========================================================
+           RODAPÉ
+        ========================================================= */
+        footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            width: 100%;
+            max-width: 520px;
+        }
+
+        footer a {
+            color: var(--accent-teal);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+            color: #ffffff;
+        }
+
+        /* Responsividade para telas muito pequenas */
+        @media (max-width: 440px) {
+            .app-card {
+                padding: 16px;
+                border-radius: 20px;
+            }
+            .note-row {
+                grid-template-columns: 70px 1fr 90px;
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            .total-amount {
+                font-size: 24px;
+            }
+            .note-tag {
+                font-size: 11px;
+            }
+            .note-subtotal {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="app-card">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="app-title">
+                <div class="icon-box">
+                    <i data-lucide="banknote" style="width:20px; height:20px;"></i>
+                </div>
+                <h1>Cédulas BRL</h1>
+            </div>
+            <button class="btn-reset" onclick="resetar()">
+                <i data-lucide="rotate-ccw" style="width:14px; height:14px;"></i> Zera
+            </button>
+        </header>
+
+        <!-- BANNER TOTAL -->
+        <section class="total-card">
+            <div class="total-meta">
+                <span class="total-label">Soma Total</span>
+                <span class="total-amount" id="grandTotal">R$ 0,00</span>
+            </div>
+            <div class="notes-counter">
+                <i data-lucide="layers" style="width:14px; height:14px;"></i>
+                <span id="totalNotes">0</span>&nbsp;notas
+            </div>
+        </section>
+
+        <!-- LISTA COMPACTA -->
+        <section class="notes-list">
+            <!-- R$ 2 -->
+            <div class="note-row">
+                <div><span class="note-tag tag-2">R$ 2</span></div>
+                <div class="stepper">
+                    <button class="btn-step" onclick="alterar(2, -1)">-</button>
+                    <input type="number" id="in-2" class="input-qty" value="0" min="0" oninput="calcular()">
+                    <button class="btn-step" onclick="alterar(2, 1)">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-2">R$ 0,00</div>
+            </div>
+
+            <!-- R$ 5 -->
+            <div class="note-row">
+                <div><span class="note-tag tag-5">R$ 5</span></div>
+                <div class="stepper">
+                    <button class="btn-step" onclick="alterar(5, -1)">-</button>
+                    <input type="number" id="in-5" class="input-qty" value="0" min="0" oninput="calcular()">
+                    <button class="btn-step" onclick="alterar(5, 1)">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-5">R$ 0,00</div>
+            </div>
+
+            <!-- R$ 10 -->
+            <div class="note-row">
+                <div><span class="note-tag tag-10">R$ 10</span></div>
+                <div class="stepper">
+                    <button class="btn-step" onclick="alterar(10, -1)">-</button>
+                    <input type="number" id="in-10" class="input-qty" value="0" min="0" oninput="calcular()">
+                    <button class="btn-step" onclick="alterar(10, 1)">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-10">R$ 0,00</div>
+            </div>
+
+            <!-- R$ 20 -->
+            <div class="note-row">
+                <div><span class="note-tag tag-20">R$ 20</span></div>
+                <div class="stepper">
+                    <button class="btn-step" onclick="alterar(20, -1)">-</button>
+                    <input type="number" id="in-20" class="input-qty" value="0" min="0" oninput="calcular()">
+                    <button class="btn-step" onclick="alterar(20, 1)">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-20">R$ 0,00</div>
+            </div>
+
+            <!-- R$ 50 -->
+            <div class="note-row">
+                <div><span class="note-tag tag-50">R$ 50</span></div>
+                <div class="stepper">
+                    <button class="btn-step" onclick="alterar(50, -1)">-</button>
+                    <input type="number" id="in-50" class="input-qty" value="0" min="0" oninput="calcular()">
+                    <button class="btn-step" onclick="alterar(50, 1)">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-50">R$ 0,00</div>
+            </div>
+
+            <!-- R$ 100 -->
+            <div class="note-row">
+                <div><span class="note-tag tag-100">R$ 100</span></div>
+                <div class="stepper">
+                    <button class="btn-step" onclick="alterar(100, -1)">-</button>
+                    <input type="number" id="in-100" class="input-qty" value="0" min="0" oninput="calcular()">
+                    <button class="btn-step" onclick="alterar(100, 1)">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-100">R$ 0,00</div>
+            </div>
+
+            <!-- R$ 200 -->
+            <div class="note-row">
+                <div><span class="note-tag tag-200">R$ 200</span></div>
+                <div class="stepper">
+                    <button class="btn-step" onclick="alterar(200, -1)">-</button>
+                    <input type="number" id="in-200" class="input-qty" value="0" min="0" oninput="calcular()">
+                    <button class="btn-step" onclick="alterar(200, 1)">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-200">R$ 0,00</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ SOLICITADO -->
+    <footer>
+        © 2026 — Desenvolvido com IA por <a href="https://wa.me/+5574991162482" target="_blank" rel="noopener noreferrer">Rangel Viana</a>
+    </footer>
+
+    <script>
+        const notas = [2, 5, 10, 20, 50, 100, 200];
+
+        function fmt(val) {
+            return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function calcular() {
+            let total = 0;
+            let count = 0;
+
+            notas.forEach(val => {
+                const input = document.getElementById(`in-${val}`);
+                let qtd = parseInt(input.value) || 0;
+                
+                if (qtd < 0) {
+                    qtd = 0;
+                    input.value = 0;
+                }
+
+                const sub = qtd * val;
+                total += sub;
+                count += qtd;
+
+                const subEl = document.getElementById(`sub-${val}`);
+                subEl.textContent = fmt(sub);
+                
+                if (sub > 0) {
+                    subEl.classList.add('active');
+                } else {
+                    subEl.classList.remove('active');
+                }
+            });
+
+            document.getElementById('grandTotal').textContent = fmt(total);
+            document.getElementById('totalNotes').textContent = count;
+        }
+
+        function alterar(val, delta) {
+            const input = document.getElementById(`in-${val}`);
+            let current = parseInt(input.value) || 0;
+            current += delta;
+            if (current < 0) current = 0;
+            input.value = current;
+            calcular();
+        }
+
+        function resetar() {
+            notas.forEach(val => {
+                document.getElementById(`in-${val}`).value = 0;
+            });
+            calcular();
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
