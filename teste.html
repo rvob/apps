@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="language" content="pt-BR">
+<meta name="geo.region" content="BR">
+<meta name="theme-color" content="#0E8F79">
+<meta name="color-scheme" content="dark">
+
+<title>Central de Aplicativos</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* =========================================================
+   TOKENS DE DESIGN (mesma identidade da página 404)
+========================================================= */
+:root {
+    --primary: #22B8A3;
+    --primary-dark: #0E8F79;
+    --primary-deep: #086F5F;
+    --primary-light: #E4FAF4;
+    --gold: #F0B94F;
+
+    --bg: #0A0E0F;
+    --bg-radial: radial-gradient(circle at 15% 0%, #10312C 0%, #0A0E0F 45%);
+    --panel: #12181A;
+    --panel-2: #161D1F;
+    --border: #223032;
+    --border-soft: #1A2426;
+
+    --text: #ffffff;
+    --muted: #7C8A8B;
+    --muted-2: #A6B3B3;
+
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --radius-sm: 9px;
+
+    /* Gradientes originais dos botões de download (mantidos como estavam,
+       apenas o layout geral ao redor foi atualizado) */
+    --btn-purple: linear-gradient(135deg, #7414a9, #4c0878);
+    --btn-blue:   linear-gradient(135deg, #0796d5, #045d9a);
+    --btn-dark:   linear-gradient(135deg, #27303d, #121720);
+    --btn-red:    linear-gradient(135deg, #f13339, #b30e19);
+    --btn-indigo: linear-gradient(135deg, #5365dc, #303e9d);
+    --btn-orange: linear-gradient(135deg, #ff8b19, #dc5900);
+    --btn-yellow: linear-gradient(135deg, #f5a000, #c87a00);
+    --btn-green:  linear-gradient(135deg, #10b981, #047857);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg-radial);
+    padding: 28px 18px 20px;
+    overflow-x: hidden;
+}
+
+h1, h2, .brand-word { font-family: 'Manrope', 'Inter', sans-serif; }
+
+.container {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+/* LINK "PULAR PARA O CONTEÚDO" (acessibilidade em controle remoto/teclado) */
+.skip-link {
+    position: absolute;
+    top: -60px;
+    left: 12px;
+    background: var(--primary-dark);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    z-index: 100;
+    transition: top .2s ease;
+}
+
+.skip-link:focus {
+    top: 12px;
+}
+
+/* CABEÇALHO */
+header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 12px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+    box-shadow: 0 8px 25px rgba(34, 184, 163, .35);
+    font-size: 24px;
+    animation: logoFloat 4s ease-in-out infinite;
+}
+
+h1 {
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.subtitle {
+    color: var(--muted-2);
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.subtitle span {
+    color: var(--primary);
+}
+
+/* GRID & CARDS */
+.buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    min-height: 80px;
+    border-radius: var(--radius-lg);
+    background: var(--accent, var(--btn-purple));
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+    animation: cardIn .4s ease both;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+}
+
+.card-main {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    padding: 14px 14px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.card-main i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .2);
+    border: 1px solid rgba(255, 255, 255, .1);
+    color: #fff;
+    font-size: 18px;
+}
+
+.btn-text {
+    display: flex;
+    flex-direction: column;
+    margin-left: 14px;
+    overflow: hidden;
+}
+
+.btn-text strong {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-text small {
+    margin-top: 2px;
+    color: var(--muted-2);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botão de ação secundária: QR Code / compartilhar entre aparelhos */
+.card-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, .18);
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, .12);
+    color: rgba(255, 255, 255, .75);
+    font-size: 16px;
+    cursor: pointer;
+    transition: color .2s ease, background .2s ease;
+}
+
+.card-action:hover {
+    color: #fff;
+    background: rgba(0, 0, 0, .3);
+}
+
+/* Card composto para UniTV */
+.card-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 80px;
+    padding: 14px 16px;
+    border-radius: var(--radius-lg);
+    background: var(--accent, var(--btn-indigo));
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+    animation: cardIn .4s ease both;
+    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+
+.card-group:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+}
+
+.unitv-title {
+    display: flex;
+    align-items: center;
+}
+
+.unitv-title i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .2);
+    border: 1px solid rgba(255, 255, 255, .1);
+    color: #fff;
+    font-size: 18px;
+}
+
+.unitv-title strong {
+    font-size: 16px;
+    font-weight: 700;
+    margin-left: 14px;
+}
+
+.unitv-links {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.btn-sublink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, .25);
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    transition: transform .2s ease, background .2s ease;
+}
+
+.btn-sublink:hover {
+    background: rgba(255, 255, 255, .2);
+    transform: translateY(-2px);
+}
+
+.btn-sublink:focus-visible,
+.card-action:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--primary);
+}
+
+/* Foco para controle de TV / Teclado */
+.card-main:focus-visible,
+.card-group:focus-within {
+    outline: none;
+}
+
+.card-main:focus-visible {
+    box-shadow: inset 0 0 0 2px #fff;
+}
+
+/* Destaque do card inteiro ao focar um item interno (aplicado via JS,
+   já que :has() não é suportado em navegadores antigos de TV box) */
+.card.focused,
+.card-group.focused {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--primary);
+}
+
+/* GRADIENTES ORIGINAIS DE CADA BOTÃO (inalterados) */
+.btn-purple { --accent: var(--btn-purple); }
+.btn-blue   { --accent: var(--btn-blue); }
+.btn-dark   { --accent: var(--btn-dark); }
+.btn-red    { --accent: var(--btn-red); }
+.btn-indigo { --accent: var(--btn-indigo); }
+.btn-orange { --accent: var(--btn-orange); }
+.btn-yellow { --accent: var(--btn-yellow); }
+.btn-green  { --accent: var(--btn-green); }
+
+/* FOOTER */
+footer {
+    text-align: center;
+    margin-top: 34px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--muted);
+    font-size: 12px;
+}
+
+footer a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    color: var(--primary-light);
+}
+
+/* MODAL DE COMPARTILHAMENTO / QR CODE */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 8, .72);
+    backdrop-filter: blur(3px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 200;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-panel {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, .5);
+    max-width: 420px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: clamp(22px, 5vw, 32px);
+    text-align: center;
+}
+
+.modal-panel::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(34, 184, 163, .16) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--muted-2);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.modal-close:hover { color: #fff; }
+
+.modal-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    position: relative;
+}
+
+.modal-desc {
+    color: var(--muted-2);
+    font-size: 13px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.qr-entry {
+    position: relative;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.qr-entry:last-child { margin-bottom: 0; }
+
+.qr-entry img {
+    width: 168px;
+    height: 168px;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    padding: 8px;
+    display: block;
+    margin: 0 auto 12px;
+}
+
+.qr-entry-label {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.qr-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.qr-actions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color .2s ease, color .2s ease;
+}
+
+.qr-actions button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* TOAST */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translate(-50%, 12px);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease;
+    z-index: 300;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* ANIMAÇÕES */
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ADAPTAÇÕES RESPONSIVAS */
+@media(max-width: 600px) {
+    body { padding: 20px 12px; }
+    .buttons-grid { grid-template-columns: 1fr; gap: 12px; }
+    .card, .card-group { min-height: 72px; }
+    .card-main { padding: 12px 14px; }
+}
+
+@media(min-width: 601px) and (max-width: 900px) {
+    .buttons-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(min-width: 1200px) {
+    .buttons-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<a href="#main" class="skip-link">Pular para o conteúdo</a>
+
+<div class="container">
+
+<header>
+    <div class="logo">
+        <i class="fa-solid fa-play"></i>
+    </div>
+    <h1>Central de Aplicativos</h1>
+    <p class="subtitle">Apps <span>atualizados</span> para seus dispositivos</p>
+</header>
+
+<main class="buttons-grid" id="main">
+
+    <!-- cLite -->
+    <div class="card btn-dark">
+        <a href="https://clubneymar.com/static/apks/cPlayer-Lite.apk" target="_blank" rel="noopener noreferrer" class="card-main" aria-label="Baixar cLite Player IPTV">
+            <i class="fa-solid fa-download"></i>
+            <span class="btn-text">
+                <strong>cLite</strong>
+                <small>Player IPTV</small>
+            </span>
+        </a>
+
+    </div>
+
+    <!-- FastPro -->
+    <div class="card btn-yellow">
+        <a href="https://download.ottrun.com/downloads/529492/PlayPro-7.0-v2000.apk" target="_blank" rel="noopener noreferrer" class="card-main" aria-label="Baixar FastPro Player IPTV">
+            <i class="fa-solid fa-download"></i>
+            <span class="btn-text">
+                <strong>FastPro</strong>
+                <small>Player IPTV</small>
+            </span>
+        </a>
+
+    </div>
+
+    <!-- QuickPlayer -->
+    <div class="card btn-purple">
+        <a href="https://api.quickplayer.app/file-1732290473813.apk" target="_blank" rel="noopener noreferrer" class="card-main" aria-label="Baixar QuickPlayer">
+            <i class="fa-solid fa-download"></i>
+            <span class="btn-text">
+                <strong>QuickPlayer</strong>
+                <small>App Pago</small>
+            </span>
+        </a>
+  
+    </div>
+
+    <!-- UniTV (TV Box e Celular) -->
+    <div class="card-group btn-indigo">
+        <div class="unitv-title">
+            <i class="fa-solid fa-layer-group"></i>
+            <strong>UniTV</strong>
+        </div>
+        <div class="unitv-links">
+            <a href="https://htv.vftopibo.top/UniTV_4.18.1-2.apk" target="_blank" rel="noopener noreferrer" class="btn-sublink" aria-label="Baixar UniTV para TV Box">
+                <i class="fa-solid fa-tv"></i> TV Box
+            </a>
+            <a href="https://htv.vftopibo.top/unitv-celular.apk" target="_blank" rel="noopener noreferrer" class="btn-sublink" aria-label="Baixar UniTV para Celular">
+                <i class="fa-solid fa-mobile-screen-button"></i> Celular
+            </a>
+
+        </div>
+    </div>
+
+    <!-- XCIPTV -->
+    <div class="card btn-blue">
+        <a href="https://drive.google.com/uc?export=download&id=1TrlPlOyJUIC8sIkNY_vd8ReVG_-xmveZ" target="_blank" rel="noopener noreferrer" class="card-main" aria-label="Baixar XCIPTV">
+            <i class="fa-solid fa-download"></i>
+            <span class="btn-text">
+                <strong>XCIPTV</strong>
+                <small>Player IPTV</small>
+            </span>
+        </a>
+
+    </div>
+
+    <!-- SmartTube -->
+    <div class="card btn-red">
+        <a href="https://github.com/yuliskov/SmartTube/releases/download/latest/smarttube_stable.apk" target="_blank" rel="noopener noreferrer" class="card-main" aria-label="Baixar SmartTube">
+            <i class="fa-solid fa-download"></i>
+            <span class="btn-text">
+                <strong>SmartTube</strong>
+                <small>YouTube Mod</small>
+            </span>
+        </a>
+
+    </div>
+
+</main>
+
+<footer>
+© 2026 — Desenvolvido com IA por <a href="https://wa.me/+5574991162482" target="_blank" rel="noopener noreferrer">Rangel Viana</a>
+</footer>
+
+</div>
+
+<!-- MODAL: QR Code / Compartilhar -->
+<div class="modal-overlay" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+    <div class="modal-panel">
+        <button type="button" class="modal-close" id="qrModalClose" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 class="modal-title" id="qrModalTitle">App</h2>
+        <p class="modal-desc">Aponte a câmera de outro aparelho para baixar sem digitar o link.</p>
+        <div id="qrModalBody"></div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* Realça o card pai ao focar um controle interno (substitui :has(),
+   que não é suportado em navegadores antigos de TV box) */
+document.querySelectorAll('.card-main, .card-action').forEach((el) => {
+    el.addEventListener('focus', () => {
+        const parent = el.closest('.card, .card-group');
+        if (parent) parent.classList.add('focused');
+    });
+    el.addEventListener('blur', () => {
+        const parent = el.closest('.card, .card-group');
+        if (parent) parent.classList.remove('focused');
+    });
+});
+
+/* Controle de Navegação TV / Teclado (Suporta links e botões internos) */
+const focusableElements = [...document.querySelectorAll('.card-main, .card-action, .btn-sublink')];
+let current = 0;
+
+function focusElement(index) {
+    if (!focusableElements.length) return;
+    current = (index + focusableElements.length) % focusableElements.length;
+    focusableElements[current].focus();
+}
+
+document.addEventListener('keydown', (e) => {
+    if (document.getElementById('qrModal').classList.contains('open')) {
+        if (e.key === 'Escape') closeQrModal();
+        return;
+    }
+
+    if (!focusableElements.length) return;
+
+    const navKeys = ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'];
+    if (!navKeys.includes(e.key)) return;
+
+    e.preventDefault();
+
+    if (document.activeElement === document.body) {
+        focusElement(0);
+        return;
+    }
+
+    const cols = window.innerWidth >= 1200 ? 3 : window.innerWidth >= 601 ? 2 : 1;
+
+    if (e.key === 'ArrowRight') focusElement(current + 1);
+    if (e.key === 'ArrowLeft')  focusElement(current - 1);
+    if (e.key === 'ArrowDown')  focusElement(current + cols);
+    if (e.key === 'ArrowUp')    focusElement(current - cols);
+});
+
+/* Toast simples de feedback */
+let toastTimer;
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+/* Modal de QR Code / Compartilhamento entre aparelhos */
+const qrModal = document.getElementById('qrModal');
+const qrModalBody = document.getElementById('qrModalBody');
+const qrModalTitle = document.getElementById('qrModalTitle');
+let lastFocusedBeforeModal = null;
+
+function qrImageUrl(url) {
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=' + encodeURIComponent(url);
+}
+
+function buildQrEntry(label, url) {
+    const wrap = document.createElement('div');
+    wrap.className = 'qr-entry';
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'qr-entry-label';
+    labelEl.textContent = label;
+    wrap.appendChild(labelEl);
+
+    const img = document.createElement('img');
+    img.src = qrImageUrl(url);
+    img.alt = 'QR Code para ' + label;
+    img.loading = 'lazy';
+    wrap.appendChild(img);
+
+    const actions = document.createElement('div');
+    actions.className = 'qr-actions';
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar link';
+    copyBtn.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(url);
+            showToast('Link copiado!');
+        } catch {
+            showToast('Não foi possível copiar');
+        }
+    });
+    actions.appendChild(copyBtn);
+
+    if (navigator.share) {
+        const shareBtn = document.createElement('button');
+        shareBtn.type = 'button';
+        shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Compartilhar';
+        shareBtn.addEventListener('click', () => {
+            navigator.share({ title: label, url }).catch(() => {});
+        });
+        actions.appendChild(shareBtn);
+    }
+
+    wrap.appendChild(actions);
+    return wrap;
+}
+
+function openQrModal(appName, entries) {
+    lastFocusedBeforeModal = document.activeElement;
+    qrModalTitle.textContent = appName;
+    qrModalBody.innerHTML = '';
+    entries.forEach(({ label, url }) => qrModalBody.appendChild(buildQrEntry(label, url)));
+    qrModal.classList.add('open');
+    document.getElementById('qrModalClose').focus();
+}
+
+function closeQrModal() {
+    qrModal.classList.remove('open');
+    if (lastFocusedBeforeModal) lastFocusedBeforeModal.focus();
+}
+
+document.getElementById('qrModalClose').addEventListener('click', closeQrModal);
+qrModal.addEventListener('click', (e) => {
+    if (e.target === qrModal) closeQrModal();
+});
+
+document.querySelectorAll('.card-action').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        const appName = btn.dataset.app;
+        if (btn.dataset.multi) {
+            openQrModal(appName, JSON.parse(btn.dataset.multi));
+        } else {
+            openQrModal(appName, [{ label: btn.dataset.label || 'Download', url: btn.dataset.url }]);
+        }
+    });
+});
+</script>
+
+</body>
+</html>
