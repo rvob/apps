@@ -5,24 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0d9488">
+    <meta name="description" content="Calculadora rápida de cédulas do Real (BRL). Some notas e veja o total instantaneamente.">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Cédulas BRL">
-    
+
     <title>Calculadora de Cédulas — Real (BRL)</title>
 
-    <!-- Favicon -->
- <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Favicon (caminho relativo: funciona em qualquer subpasta) -->
+    <link rel="icon" type="image/svg+xml" href="/calc/favicon.svg">
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Fonte Inter -->
+    <!-- Fonte Inter (apenas os pesos realmente usados no layout) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
         /* =========================================================
@@ -37,7 +36,7 @@
             --text-muted: #64748b;
             --accent-teal: #0d9488;
             --accent-teal-glow: rgba(13, 148, 136, 0.1);
-            
+
             /* Cores Cédulas */
             --tag-2: #2563eb;
             --tag-5: #9333ea;
@@ -46,6 +45,10 @@
             --tag-50: #b45309;
             --tag-100: #0284c7;
             --tag-200: #4b5563;
+
+            /* Áreas seguras (notch / iOS) */
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         * {
@@ -59,21 +62,21 @@
             background: var(--bg-body);
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: var(--text-main);
-            padding: 32px 16px;
+            padding: calc(24px + var(--safe-top)) 16px calc(24px + var(--safe-bottom));
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
         }
 
         .app-card {
             width: 100%;
-            max-width: 520px;
+            max-width: 480px;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 24px;
-            padding: 24px;
+            padding: clamp(16px, 5vw, 24px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
         }
 
@@ -81,16 +84,19 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 18px;
         }
 
         .app-title {
             display: flex;
             align-items: center;
             gap: 10px;
+            min-width: 0;
         }
 
         .app-title .icon-box {
+            flex-shrink: 0;
             width: 38px;
             height: 38px;
             border-radius: 12px;
@@ -102,74 +108,73 @@
         }
 
         .app-title h1 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             letter-spacing: -0.3px;
             color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0;
         }
+
+        .btn {
+            border: 1px solid transparent;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
 
         /* BOTÃO INSTALAR PWA */
         .btn-install {
             background: var(--accent-teal);
-            border: 1px solid var(--accent-teal);
+            border-color: var(--accent-teal);
             color: #ffffff;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: none; /* Escondido por padrão, aparece apenas via JS quando disponível */
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-
-        .btn-install:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+            display: none; /* aparece via JS quando o navegador permite instalar */
         }
 
         .btn-reset {
             background: #fef2f2;
-            border: 1px solid #fecaca;
+            border-color: #fecaca;
             color: #dc2626;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
         }
 
-        .btn-reset:hover {
-            background: #fee2e2;
-            transform: translateY(-1px);
-        }
+        .btn-reset:hover { background: #fee2e2; }
 
         .total-card {
             background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(241, 245, 249, 0.6) 100%);
             border: 1px solid rgba(13, 148, 136, 0.2);
             border-radius: 18px;
-            padding: 18px 20px;
-            margin-bottom: 20px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 10px;
         }
 
         .total-meta {
             display: flex;
             flex-direction: column;
             gap: 2px;
+            min-width: 0;
         }
 
         .total-label {
@@ -181,14 +186,16 @@
         }
 
         .total-amount {
-            font-size: 30px;
+            font-size: clamp(22px, 6vw, 30px);
             font-weight: 900;
             color: var(--text-main);
             letter-spacing: -0.5px;
             line-height: 1.1;
+            white-space: nowrap;
         }
 
         .notes-counter {
+            flex-shrink: 0;
             font-size: 12px;
             font-weight: 700;
             color: var(--accent-teal);
@@ -198,24 +205,27 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            white-space: nowrap;
         }
+
+        .notes-counter svg { width: 14px; height: 14px; }
 
         .notes-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .note-row {
             background: #ffffff;
             border: 1px solid var(--card-border);
             border-radius: 14px;
-            padding: 10px 14px;
+            padding: 8px 12px;
             display: grid;
-            grid-template-columns: 85px 1fr 110px;
+            grid-template-columns: minmax(56px, 78px) 1fr minmax(70px, 100px);
             align-items: center;
-            gap: 12px;
-            transition: all 0.2s ease;
+            gap: 8px;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .note-row:focus-within, .note-row:hover {
@@ -224,15 +234,14 @@
         }
 
         .note-tag {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
-            padding: 5px 10px;
+            padding: 5px 6px;
             border-radius: 8px;
             text-align: center;
             color: #ffffff;
-            display: inline-block;
+            display: block;
             width: 100%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .tag-2 { background: var(--tag-2); }
@@ -246,7 +255,7 @@
         .stepper {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             background: var(--input-bg);
             border: 1px solid var(--card-border);
             border-radius: 10px;
@@ -254,6 +263,7 @@
         }
 
         .btn-step {
+            flex-shrink: 0;
             width: 28px;
             height: 28px;
             border: 1px solid var(--card-border);
@@ -262,12 +272,14 @@
             border-radius: 7px;
             font-size: 14px;
             font-weight: 800;
+            font-family: inherit;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.15s;
+            transition: background 0.15s, color 0.15s, transform 0.1s;
             user-select: none;
+            touch-action: manipulation;
         }
 
         .btn-step:hover {
@@ -276,9 +288,7 @@
             color: #ffffff;
         }
 
-        .btn-step:active {
-            transform: scale(0.92);
-        }
+        .btn-step:active { transform: scale(0.92); }
 
         .input-qty {
             width: 100%;
@@ -302,23 +312,24 @@
 
         .note-subtotal {
             text-align: right;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--text-muted);
             transition: color 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .note-subtotal.active {
-            color: var(--accent-teal);
-        }
+        .note-subtotal.active { color: var(--accent-teal); }
 
         footer {
-            margin-top: 0;
             text-align: center;
             font-size: 12px;
             color: var(--text-muted);
             width: 100%;
-            max-width: 520px;
+            max-width: 480px;
+            padding-bottom: 4px;
         }
 
         footer a {
@@ -333,30 +344,15 @@
             color: var(--text-main);
         }
 
-        @media (max-width: 440px) {
-            body {
-                padding: 16px;
-                gap: 16px;
-            }
-            .app-card {
-                padding: 16px;
-                border-radius: 20px;
-            }
+        @media (max-width: 360px) {
             .note-row {
-                grid-template-columns: 75px 1fr 90px;
-                padding: 8px 10px;
-                gap: 8px;
+                grid-template-columns: minmax(48px, 64px) 1fr minmax(58px, 80px);
+                padding: 6px 8px;
+                gap: 6px;
             }
-            .total-amount {
-                font-size: 24px;
-            }
-            .note-tag {
-                font-size: 11px;
-                padding: 4px 6px;
-            }
-            .note-subtotal {
-                font-size: 13px;
-            }
+            .note-tag { font-size: 11px; padding: 4px; }
+            .note-subtotal { font-size: 12px; }
+            .btn-step { width: 24px; height: 24px; }
         }
     </style>
 </head>
@@ -376,10 +372,22 @@
                 </div>
                 <h1>Cédulas BRL</h1>
             </div>
-            
+
             <div class="header-actions">
-                <button class="btn-reset" onclick="resetar()">
-                    <i data-lucide="rotate-ccw" style="width:14px; height:14px;"></i> Zera
+                <button id="btnInstall" class="btn btn-install" onclick="instalarPWA()" aria-label="Instalar aplicativo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" x2="12" y1="15" y2="3"/>
+                    </svg>
+                    Instalar
+                </button>
+                <button class="btn btn-reset" onclick="resetar()" aria-label="Zerar todas as quantidades">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                        <path d="M3 3v5h5"/>
+                    </svg>
+                    Zerar
                 </button>
             </div>
         </header>
@@ -388,93 +396,20 @@
         <section class="total-card">
             <div class="total-meta">
                 <span class="total-label">Soma Total</span>
-                <span class="total-amount" id="grandTotal">R$ 0,00</span>
+                <span class="total-amount" id="grandTotal" aria-live="polite">R$ 0,00</span>
             </div>
             <div class="notes-counter">
-                <i data-lucide="layers" style="width:14px; height:14px;"></i>
-                <span id="totalNotes">0</span>&nbsp;notas
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/>
+                    <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/>
+                    <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>
+                </svg>
+                <span id="totalNotes" aria-live="polite">0</span>&nbsp;notas
             </div>
         </section>
 
         <!-- LISTA COMPACTA -->
-        <section class="notes-list">
-            <!-- R$ 2 -->
-            <div class="note-row">
-                <div><span class="note-tag tag-2">R$ 2</span></div>
-                <div class="stepper">
-                    <button class="btn-step" onclick="alterar(2, -1)">-</button>
-                    <input type="number" id="in-2" class="input-qty" value="0" min="0" oninput="calcular()">
-                    <button class="btn-step" onclick="alterar(2, 1)">+</button>
-                </div>
-                <div class="note-subtotal" id="sub-2">R$ 0,00</div>
-            </div>
-
-            <!-- R$ 5 -->
-            <div class="note-row">
-                <div><span class="note-tag tag-5">R$ 5</span></div>
-                <div class="stepper">
-                    <button class="btn-step" onclick="alterar(5, -1)">-</button>
-                    <input type="number" id="in-5" class="input-qty" value="0" min="0" oninput="calcular()">
-                    <button class="btn-step" onclick="alterar(5, 1)">+</button>
-                </div>
-                <div class="note-subtotal" id="sub-5">R$ 0,00</div>
-            </div>
-
-            <!-- R$ 10 -->
-            <div class="note-row">
-                <div><span class="note-tag tag-10">R$ 10</span></div>
-                <div class="stepper">
-                    <button class="btn-step" onclick="alterar(10, -1)">-</button>
-                    <input type="number" id="in-10" class="input-qty" value="0" min="0" oninput="calcular()">
-                    <button class="btn-step" onclick="alterar(10, 1)">+</button>
-                </div>
-                <div class="note-subtotal" id="sub-10">R$ 0,00</div>
-            </div>
-
-            <!-- R$ 20 -->
-            <div class="note-row">
-                <div><span class="note-tag tag-20">R$ 20</span></div>
-                <div class="stepper">
-                    <button class="btn-step" onclick="alterar(20, -1)">-</button>
-                    <input type="number" id="in-20" class="input-qty" value="0" min="0" oninput="calcular()">
-                    <button class="btn-step" onclick="alterar(20, 1)">+</button>
-                </div>
-                <div class="note-subtotal" id="sub-20">R$ 0,00</div>
-            </div>
-
-            <!-- R$ 50 -->
-            <div class="note-row">
-                <div><span class="note-tag tag-50">R$ 50</span></div>
-                <div class="stepper">
-                    <button class="btn-step" onclick="alterar(50, -1)">-</button>
-                    <input type="number" id="in-50" class="input-qty" value="0" min="0" oninput="calcular()">
-                    <button class="btn-step" onclick="alterar(50, 1)">+</button>
-                </div>
-                <div class="note-subtotal" id="sub-50">R$ 0,00</div>
-            </div>
-
-            <!-- R$ 100 -->
-            <div class="note-row">
-                <div><span class="note-tag tag-100">R$ 100</span></div>
-                <div class="stepper">
-                    <button class="btn-step" onclick="alterar(100, -1)">-</button>
-                    <input type="number" id="in-100" class="input-qty" value="0" min="0" oninput="calcular()">
-                    <button class="btn-step" onclick="alterar(100, 1)">+</button>
-                </div>
-                <div class="note-subtotal" id="sub-100">R$ 0,00</div>
-            </div>
-
-            <!-- R$ 200 -->
-            <div class="note-row">
-                <div><span class="note-tag tag-200">R$ 200</span></div>
-                <div class="stepper">
-                    <button class="btn-step" onclick="alterar(200, -1)">-</button>
-                    <input type="number" id="in-200" class="input-qty" value="0" min="0" oninput="calcular()">
-                    <button class="btn-step" onclick="alterar(200, 1)">+</button>
-                </div>
-                <div class="note-subtotal" id="sub-200">R$ 0,00</div>
-            </div>
-        </section>
+        <section class="notes-list" id="notesList"></section>
     </main>
 
     <!-- RODAPÉ -->
@@ -484,6 +419,21 @@
 
     <script>
         const notas = [2, 5, 10, 20, 50, 100, 200];
+
+        // Gera a lista de cédulas dinamicamente (menos HTML repetido para manter)
+        const listEl = document.getElementById('notesList');
+        listEl.innerHTML = notas.map(val => `
+            <div class="note-row">
+                <div><span class="note-tag tag-${val}">R$ ${val}</span></div>
+                <div class="stepper">
+                    <button type="button" class="btn-step" onclick="alterar(${val}, -1)" aria-label="Diminuir quantidade de notas de R$ ${val}">−</button>
+                    <input type="number" inputmode="numeric" id="in-${val}" class="input-qty" value="0" min="0" step="1"
+                           aria-label="Quantidade de notas de R$ ${val}" oninput="calcular()" onfocus="this.select()">
+                    <button type="button" class="btn-step" onclick="alterar(${val}, 1)" aria-label="Aumentar quantidade de notas de R$ ${val}">+</button>
+                </div>
+                <div class="note-subtotal" id="sub-${val}">R$ 0,00</div>
+            </div>
+        `).join('');
 
         function fmt(val) {
             return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -495,8 +445,8 @@
 
             notas.forEach(val => {
                 const input = document.getElementById(`in-${val}`);
-                let qtd = parseInt(input.value) || 0;
-                
+                let qtd = parseInt(input.value, 10) || 0;
+
                 if (qtd < 0) {
                     qtd = 0;
                     input.value = 0;
@@ -508,12 +458,7 @@
 
                 const subEl = document.getElementById(`sub-${val}`);
                 subEl.textContent = fmt(sub);
-                
-                if (sub > 0) {
-                    subEl.classList.add('active');
-                } else {
-                    subEl.classList.remove('active');
-                }
+                subEl.classList.toggle('active', sub > 0);
             });
 
             document.getElementById('grandTotal').textContent = fmt(total);
@@ -522,9 +467,8 @@
 
         function alterar(val, delta) {
             const input = document.getElementById(`in-${val}`);
-            let current = parseInt(input.value) || 0;
-            current += delta;
-            if (current < 0) current = 0;
+            let current = parseInt(input.value, 10) || 0;
+            current = Math.max(0, current + delta);
             input.value = current;
             calcular();
         }
@@ -536,7 +480,14 @@
             calcular();
         }
 
-        lucide.createIcons();
+        // Evita que a roda do mouse altere o valor sem querer
+        document.addEventListener('wheel', () => {
+            if (document.activeElement && document.activeElement.type === 'number') {
+                document.activeElement.blur();
+            }
+        }, { passive: true });
+
+        calcular();
 
         /* =========================================================
            LÓGICA PWA (REGISTRO SW & PROMPT DE INSTALAÇÃO)
@@ -555,7 +506,7 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            btnInstall.style.display = 'flex';
+            btnInstall.style.display = 'inline-flex';
         });
 
         async function instalarPWA() {

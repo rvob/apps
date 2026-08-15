@@ -1,18 +1,26 @@
 {
-  "name": "Calculadora de Cédulas BRL",
+  "name": "Calculadora de Cédulas — Real (BRL)",
   "short_name": "Cédulas BRL",
-  "description": "Calculadora rápida e prática de cédulas do Real.",
+  "description": "Calculadora rápida de cédulas do Real brasileiro (BRL).",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
+  "lang": "pt-BR",
   "background_color": "#f1f5f9",
   "theme_color": "#0d9488",
-  "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='160' fill='%230d9488'/><g transform='translate(96, 96) scale(13.333)' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'><rect width='20' height='12' x='2' y='6' rx='2'/><circle cx='12' cy='12' r='2'/><path d='M6 12h.01M18 12h.01'/></g></svg>",
-      "sizes": "192x192 512x512",
+      "src": "favicon.svg",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }
