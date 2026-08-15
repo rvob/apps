@@ -11,8 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Links M3U" />
 
-      <link rel="icon" type="image/png" href="favicon.png">
-   
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <!-- Manifest PWA Inline via Data URI -->
   <link rel="manifest" href='data:application/json,{"name":"Links M3U","short_name":"Links M3U","description":"Gerador de Links M3U e EPG","start_url":".","display":"standalone","background_color":"#08090d","theme_color":"#08090d","icons":[{"src":"data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 rx=%22128%22 fill=%22url(%23grad)%22/><defs><linearGradient id=%22grad%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22><stop offset=%220%25%22 stop-color=%22%237b1bc2%22/><stop offset=%22100%25%22 stop-color=%22%233c0870%22/></linearGradient></defs><path fill=%22none%22 stroke=%22%23ffffff%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2236%22 d=%22M208 304l96-96M224 160l28-28a68 68 0 0196 96l-28 28M288 352l-28 28a68 68 0 01-96-96l28-28%22/></svg>","sizes":"512x512","type":"image/svg+xml"}]' />
@@ -325,17 +324,16 @@
       });
     }
 
-    // Registro do Service Worker (Necessário para o PWA no Chrome / Android)
+    // Registro do Service Worker via Data URI para compatibilidade total de PWA Inline
     if ('serviceWorker' in navigator) {
-      const swCode = `
-        self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
-        self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-        self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
-      `;
-      const blob = new Blob([swCode], { type: 'application/javascript' });
-      const swUrl = URL.createObjectURL(blob);
-
-      navigator.serviceWorker.register(swUrl).catch(err => console.log('SW error:', err));
+      window.addEventListener('load', () => {
+        const swContent = "self.addEventListener('install', e => e.waitUntil(self.skipWaiting())); self.addEventListener('activate', e => e.waitUntil(self.clients.claim())); self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));";
+        const swDataUrl = 'data:text/javascript;base64,' + btoa(swContent);
+        
+        navigator.serviceWorker.register(swDataUrl)
+          .then(() => console.log('Service Worker PWA Registrado'))
+          .catch(err => console.log('Erro ao registrar Service Worker:', err));
+      });
     }
   </script>
 </body>
