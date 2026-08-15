@@ -4,52 +4,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#32bcad">
-    
-    <title>Gerador PIX</title>
-    
-    <!-- Configurações PWA -->
-    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0E8F79">
+    <title>Gerador de Placa PIX</title>
     <link rel="icon" type="image/png" href="favicon.png">
 
-    <!-- Fonte Inter para Legibilidade Superior -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Libs QR Code e Canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+    <style id="pageStyle">
+        @page { size: A5 landscape; margin: 0; }
+    </style>
+
     <style>
         /* =========================================================
-           RESET E VARIÁVEIS DE DESIGN
+           TOKENS DE DESIGN
         ========================================================= */
         :root {
-            --pix-primary: #32bcad;
-            --pix-dark: #008774;
-            --pix-light: #e6f7f5;
-            --bg-dark: #121316;
-            --panel-bg: #1c1e22;
-            --text-muted: #9da4b0;
-            --border-color: #2e323b;
+            --primary: #22B8A3;
+            --primary-dark: #0E8F79;
+            --primary-deep: #086F5F;
+            --primary-light: #E4FAF4;
+            --gold: #F0B94F;
+
+            --bg: #0A0E0F;
+            --bg-radial: radial-gradient(circle at 15% 0%, #10312C 0%, #0A0E0F 45%);
+            --panel: #12181A;
+            --panel-2: #161D1F;
+            --border: #223032;
+            --border-soft: #1A2426;
+
+            --ink: #0B1614;
+            --muted: #7C8A8B;
+            --muted-2: #A6B3B3;
+
+            --radius-lg: 22px;
+            --radius-md: 14px;
+            --radius-sm: 9px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { color-scheme: dark; }
 
         body {
             min-height: 100vh;
-            background: var(--bg-dark);
+            background: var(--bg-radial);
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: #ffffff;
-            padding: 20px;
+            padding: 32px 20px;
+        }
+
+        h1, h2, .brand-word { font-family: 'Manrope', 'Inter', sans-serif; }
+
+        /* =========================================================
+           TOPO
+        ========================================================= */
+        .top-bar {
+            max-width: 1180px;
+            margin: 0 auto 28px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: none;
+        }
+
+        .brand-mark svg { width: 20px; height: 20px; }
+
+        .brand-text h1 {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.2px;
+        }
+
+        .brand-text p {
+            font-size: 12.5px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .top-tag {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(34, 184, 163, 0.12);
+            border: 1px solid rgba(34, 184, 163, 0.3);
+            padding: 7px 14px;
+            border-radius: 100px;
+            letter-spacing: 0.3px;
         }
 
         /* =========================================================
@@ -57,69 +119,94 @@
         ========================================================= */
         .app-layout {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1180px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 32px;
-            align-items: center;
+            grid-template-columns: 350px 1fr;
+            gap: 28px;
+            align-items: start;
         }
 
         /* =========================================================
            PAINEL DE CONFIGURAÇÕES
         ========================================================= */
         .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+            position: sticky;
+            top: 24px;
         }
 
-        .panel h2 {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--pix-primary);
-            margin-bottom: 20px;
+        .panel-head {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 22px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border-soft);
         }
 
-        .form-group {
-            margin-bottom: 16px;
+        .panel-head .num {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            color: var(--primary-deep);
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .panel-head h2 {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.1px;
+        }
+
+        .form-group { margin-bottom: 16px; }
 
         label {
             display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--muted-2);
+            margin-bottom: 7px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
         }
 
         input, select {
             width: 100%;
             height: 46px;
             padding: 0 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            background: #121316;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--panel-2);
             color: #fff;
             font-size: 14px;
             font-family: inherit;
+            font-weight: 500;
             outline: none;
-            transition: all 0.2s;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
 
-        input::placeholder {
-            color: #666;
-        }
+        input::placeholder { color: #566264; }
 
         input:focus, select:focus {
-            border-color: var(--pix-primary);
-            box-shadow: 0 0 0 3px rgba(50, 188, 173, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(34, 184, 163, 0.18);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237C8A8B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
         }
 
         .format-selector {
@@ -129,23 +216,31 @@
         }
 
         .btn-format {
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            background: #121316;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 700;
+            padding: 14px 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--panel-2);
+            color: var(--muted-2);
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
 
+        .btn-format svg { width: 22px; height: 22px; opacity: 0.7; }
+
+        .btn-format span { font-size: 12.5px; font-weight: 700; }
+
         .btn-format.active {
-            background: rgba(50, 188, 173, 0.15);
-            border-color: var(--pix-primary);
-            color: var(--pix-primary);
+            background: rgba(34, 184, 163, 0.12);
+            border-color: var(--primary);
+            color: var(--primary);
         }
+
+        .btn-format.active svg { opacity: 1; }
 
         .action-buttons {
             display: flex;
@@ -158,289 +253,326 @@
             width: 100%;
             height: 48px;
             border: 0;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 9px;
+            letter-spacing: 0.1px;
         }
 
-        .btn-primary { background: var(--pix-primary); color: #0f1115; }
-        .btn-outline { background: #ffffff; color: #0f1115; }
-        .btn-install { 
-            background: transparent; 
-            border: 1px solid var(--pix-primary); 
-            color: var(--pix-primary); 
-            display: none;
-        }
+        .btn svg { width: 17px; height: 17px; }
 
-        .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #06231d; }
+        .btn-secondary { background: var(--panel-2); border: 1px solid var(--border); color: #fff; }
+        .btn-outline { background: #ffffff; color: var(--ink); }
+
+        .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
         .btn:active { transform: translateY(0); }
 
+        .hint {
+            font-size: 11.5px;
+            color: var(--muted);
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        .site-footer {
+            max-width: 1180px;
+            margin: 36px auto 0;
+            text-align: center;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--muted);
+            padding-top: 20px;
+            border-top: 1px solid var(--border-soft);
+        }
+
+        .site-footer a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .site-footer a:hover { text-decoration: underline; }
+
         /* =========================================================
-           ÁREA DE PRÉ-VISUALIZAÇÃO DA PLACA
+           ÁREA DE PRÉ-VISUALIZAÇÃO
         ========================================================= */
         .preview-area {
             width: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 10px;
+            gap: 18px;
         }
 
+        .print-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--muted-2);
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 100px;
+        }
+
+        .print-tag b { color: var(--primary); font-weight: 800; }
+        .print-tag .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); }
+
+        .stage {
+            position: relative;
+            padding: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .crop {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-color: rgba(255, 255, 255, 0.22);
+            border-style: solid;
+            border-width: 0;
+        }
+
+        .crop.tl { top: 6px; left: 6px; border-top-width: 1.5px; border-left-width: 1.5px; }
+        .crop.tr { top: 6px; right: 6px; border-top-width: 1.5px; border-right-width: 1.5px; }
+        .crop.bl { bottom: 6px; left: 6px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+        .crop.br { bottom: 6px; right: 6px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+        /* =========================================================
+           PLACA
+        ========================================================= */
         .placa {
             background: #ffffff;
-            color: #0f1115;
-            border-radius: 20px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            color: var(--ink);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
             overflow: hidden;
             position: relative;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
-            margin: 0 auto;
-            
-            width: 100%;
-            max-width: 650px;
-            min-height: auto;
+            width: min(88vw, 640px);
+            aspect-ratio: 210 / 148;
         }
 
-        /* CABEÇALHO DA PLACA */
+        .placa.vertical {
+            width: min(88vw, 452px);
+            aspect-ratio: 148 / 210;
+        }
+
+        /* CABEÇALHO */
         .placa-header {
-            background: linear-gradient(135deg, var(--pix-primary), var(--pix-dark));
-            padding: 22px 28px;
+            background: linear-gradient(120deg, var(--primary), var(--primary-deep) 85%);
+            padding: clamp(16px, 3.4%, 26px) clamp(20px, 4.4%, 30px);
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: #ffffff;
-            width: 100%;
+            flex: none;
         }
 
-        .placa-header .logo-pix {
-            height: 36px;
+        .placa-header .pix-word {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: clamp(17px, 3.4vw, 22px);
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .placa-header .pix-word svg { width: clamp(20px, 3.6vw, 26px); height: clamp(20px, 3.6vw, 26px); }
+
+        .brand-logo {
+            height: clamp(30px, 5.6vw, 44px);
             width: auto;
-            filter: brightness(0) invert(1);
+            max-width: 175px;
+            object-fit: contain;
         }
 
         .placa-header .header-tag {
-            font-size: 12px;
+            font-size: 10.5px;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
             background: rgba(255, 255, 255, 0.2);
             padding: 6px 12px;
-            border-radius: 20px;
+            border-radius: 100px;
+            white-space: nowrap;
         }
 
-        /* CORPO DA PLACA */
+        /* CORPO */
         .placa-body {
-            padding: 24px 28px;
+            padding: clamp(20px, 4.4%, 34px);
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 24px;
+            gap: clamp(18px, 3.6vw, 32px);
             align-items: center;
             flex: 1;
-            width: 100%;
-        }
-
-        .info-group {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .info-block {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
-        }
-
-        .info-value-main {
-            font-size: 20px;
-            font-weight: 900;
-            color: #0f1115;
-            line-height: 1.2;
-        }
-
-        .info-value-sub {
-            font-size: 14px;
-            font-weight: 600;
-            color: #374151;
-        }
-
-        .key-badge {
-            background: var(--pix-light);
-            border: 1px solid rgba(50, 188, 173, 0.3);
-            border-radius: 12px;
-            padding: 10px 14px;
-            margin-top: 2px;
-        }
-
-        .key-badge .key-text {
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--pix-dark);
-            word-break: break-all;
-        }
-
-        /* CONTAINER DO QR CODE */
-        .qr-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #f8fafc;
-            border: 2px dashed #e2e8f0;
-            padding: 14px;
-            border-radius: 16px;
-        }
-
-        #qrcode {
-            width: 160px;
-            height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #qrcode img, #qrcode canvas {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        .qr-instruction {
-            font-size: 11px;
-            font-weight: 700;
-            color: #475569;
-            margin-top: 8px;
-            text-align: center;
-        }
-
-        /* RODAPÉ DA PLACA (SEM CORTES) */
-        .placa-footer {
-            background: #f1f5f9;
-            padding: 14px 20px;
-            font-size: 11px;
-            font-weight: 800;
-            color: #475569;
-            letter-spacing: 0.5px;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-        }
-
-        /* =========================================================
-           FORMATO VERTICAL (CORRIGIDO PARA NÃO CORTAR)
-        ========================================================= */
-        .placa.vertical {
-            max-width: 380px;
-            margin: 0 auto;
+            min-height: 0;
         }
 
         .placa.vertical .placa-body {
             grid-template-columns: 1fr;
             text-align: center;
-            gap: 20px;
             justify-items: center;
-            padding: 24px 20px;
         }
 
-        .placa.vertical .info-group {
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(12px, 2.4vw, 20px);
+            min-width: 0;
+        }
+
+        .placa.vertical .info-group { align-items: center; width: 100%; }
+
+        .info-block { display: flex; flex-direction: column; min-width: 0; }
+
+        .info-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #7A8785;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+        }
+
+        .info-value-main {
+            font-size: clamp(16px, 3.4vw, 21px);
+            font-weight: 800;
+            color: var(--ink);
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .info-value-sub {
+            font-size: clamp(13.5px, 2.8vw, 16.5px);
+            font-weight: 600;
+            color: #4B5654;
+        }
+
+        .key-badge {
+            background: var(--primary-light);
+            border: 1px solid rgba(34, 184, 163, 0.35);
+            border-radius: var(--radius-sm);
+            padding: clamp(11px, 2vw, 15px) clamp(14px, 2.4vw, 18px);
+            width: 100%;
+        }
+
+        .key-badge .info-label { color: var(--primary-deep); opacity: 0.75; }
+
+        .key-badge .key-text {
+            font-size: clamp(15px, 3.1vw, 18.5px);
+            font-weight: 800;
+            color: var(--primary-deep);
+            word-break: break-all;
+        }
+
+        /* QR */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            width: 100%;
+            justify-content: center;
+            background: #F6FBFA;
+            border: 1.5px dashed #C9DEDA;
+            padding: clamp(12px, 2.4vw, 18px);
+            border-radius: var(--radius-md);
+            flex: none;
         }
 
-        .placa.vertical .qr-container {
-            width: 100%;
-            max-width: 220px;
-            margin: 0 auto;
+        #qrcode {
+            width: clamp(135px, 24vw, 205px);
+            height: clamp(135px, 24vw, 205px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .placa.vertical #qrcode {
-            width: 160px;
-            height: 160px;
+        #qrcode img, #qrcode canvas { max-width: 100%; max-height: 100%; }
+
+        .qr-instruction {
+            font-size: 11px;
+            font-weight: 700;
+            color: #5B6866;
+            margin-top: 9px;
+            text-align: center;
+            letter-spacing: 0.1px;
+        }
+
+        /* RODAPÉ */
+        .placa-footer {
+            background: #F5F9F8;
+            padding: clamp(10px, 2vw, 14px) 20px;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #56635F;
+            letter-spacing: 0.5px;
+            border-top: 1px solid #E7EEEC;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex: none;
         }
 
         /* =========================================================
            RESPONSIVIDADE
         ========================================================= */
-        @media (max-width: 850px) {
-            .app-layout {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 900px) {
+            .app-layout { grid-template-columns: 1fr; }
+            .panel { position: static; }
+        }
 
-            body {
-                padding: 12px;
-            }
-
-            .placa-body {
-                grid-template-columns: 1fr;
-                padding: 20px;
-                gap: 20px;
-            }
-
-            .qr-container {
-                width: 100%;
-            }
-
-            #qrcode {
-                width: 150px !important;
-                height: 150px !important;
-            }
+        @media (max-width: 480px) {
+            body { padding: 20px 12px; }
+            .top-bar { flex-wrap: wrap; }
+            .stage { padding: 18px 8px; }
         }
 
         /* =========================================================
-           REGRAS DE IMPRESSÃO
+           IMPRESSÃO
         ========================================================= */
         @media print {
-            @page {
-                size: A5;
-                margin: 0;
-            }
-
             body {
                 background: #ffffff;
                 padding: 0;
                 margin: 0;
             }
 
-            .panel {
-                display: none !important;
-            }
+            .top-bar, .panel, .print-tag, .crop, .site-footer { display: none !important; }
 
-            .app-layout {
-                display: block;
-                width: 100%;
-            }
+            .app-layout { display: block; width: 100%; }
 
-            .preview-area {
-                padding: 0;
-            }
+            .preview-area { gap: 0; }
+
+            .stage { padding: 0; }
 
             .placa {
-                width: 148mm;
-                height: 210mm;
+                width: 210mm;
+                height: 148mm;
+                aspect-ratio: unset;
                 max-width: none;
                 border-radius: 0;
                 box-shadow: none;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
+            }
+
+            .placa.vertical {
+                width: 148mm;
+                height: 210mm;
             }
         }
     </style>
@@ -448,30 +580,53 @@
 
 <body>
 
+<div class="top-bar">
+    <div class="brand">
+        <div class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="7" height="7" rx="1.6" stroke="#fff" stroke-width="1.8"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.6" stroke="#fff" stroke-width="1.8"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.6" stroke="#fff" stroke-width="1.8"/>
+                <rect x="14.5" y="14.5" width="2.6" height="2.6" rx="0.5" fill="#fff"/>
+                <rect x="18.4" y="14.5" width="2.6" height="2.6" rx="0.5" fill="#fff"/>
+                <rect x="14.5" y="18.4" width="2.6" height="2.6" rx="0.5" fill="#fff"/>
+                <rect x="18.4" y="18.4" width="2.6" height="2.6" rx="0.5" fill="#fff"/>
+            </svg>
+        </div>
+        <div class="brand-text">
+            <h1>Gerador de Placa PIX</h1>
+            <p>Placas prontas para impressão em A5</p>
+        </div>
+    </div>
+    <div class="top-tag">Impressão A5 · vertical ou horizontal</div>
+</div>
+
 <div class="app-layout">
 
     <!-- PAINEL DE CONTROLE -->
     <div class="panel">
-        <h2>Dados PIX</h2>
+        <div class="panel-head">
+            <h2>Dados do PIX</h2>
+        </div>
 
         <div class="form-group">
-            <label for="nome">Nome do Recebedor</label>
+            <label for="nome">Nome do recebedor</label>
             <input id="nome" type="text" placeholder="Ex.: Rangel Viana">
         </div>
 
         <div class="form-group">
-            <label for="banco">Instituição / Banco (opcional)</label>
+            <label for="banco">Instituição / banco (opcional)</label>
             <input id="banco" type="text" placeholder="Ex.: Nubank, Mercado Pago...">
         </div>
 
         <div class="form-group">
-            <label for="tipo">Tipo de Chave</label>
+            <label for="tipo">Tipo de chave</label>
             <select id="tipo">
                 <option value="E-MAIL">E-mail</option>
                 <option value="CELULAR">Celular</option>
                 <option value="CPF">CPF</option>
                 <option value="CNPJ">CNPJ</option>
-                <option value="CHAVE ALEATÓRIA">Chave Aleatória</option>
+                <option value="CHAVE ALEATÓRIA">Chave aleatória</option>
             </select>
         </div>
 
@@ -481,75 +636,110 @@
         </div>
 
         <div class="form-group">
-            <label>Formato Visual</label>
+            <label>Formato de impressão</label>
             <div class="format-selector">
-                <div id="btnHoriz" class="btn-format active" onclick="definirFormato('horizontal')">Horizontal</div>
-                <div id="btnVert" class="btn-format" onclick="definirFormato('vertical')">Vertical</div>
+                <div id="btnHoriz" class="btn-format active" onclick="definirFormato('horizontal')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="5" width="20" height="14" rx="2.2" stroke="currentColor" stroke-width="1.6"/>
+                    </svg>
+                    <span>Horizontal</span>
+                </div>
+                <div id="btnVert" class="btn-format" onclick="definirFormato('vertical')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="2" width="14" height="20" rx="2.2" stroke="currentColor" stroke-width="1.6"/>
+                    </svg>
+                    <span>Vertical</span>
+                </div>
             </div>
         </div>
 
         <div class="action-buttons">
-            <button class="btn btn-primary" onclick="atualizarPlaca()">Gerar Placa</button>
-            <button class="btn btn-outline" onclick="baixarImagem()">Baixar Imagem</button>
+            <button class="btn btn-primary" onclick="atualizarPlaca()">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h16M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Gerar placa
+            </button>
+            <button class="btn btn-secondary" onclick="baixarImagem()">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v13m0 0l-4.5-4.5M12 16l4.5-4.5M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Baixar imagem
+            </button>
         </div>
     </div>
 
-    <!-- ÁREA DE VISUALIZAÇÃO DA PLACA -->
+    <!-- ÁREA DE VISUALIZAÇÃO -->
     <div class="preview-area">
-        <div id="placa" class="placa">
-            
-            <!-- CABEÇALHO DA PLACA -->
-            <div class="placa-header">
-                <img class="logo-pix" src="logo.png" alt="Pix Logo" crossorigin="anonymous">
-                <span class="header-tag">Pagamento Instantâneo</span>
-            </div>
+        <div class="print-tag" id="printTag">
+            <span>Formato</span>
+            <span class="dot"></span>
+            <b id="printTagFormat">Horizontal</b>
+            <span class="dot"></span>
+            <span id="printTagSize">210 × 148 mm · A5</span>
+        </div>
 
-            <!-- CORPO DA PLACA -->
-            <div class="placa-body">
-                <div class="info-group">
-                    
-                    <div class="info-block">
-                        <span class="info-label">Recebedor</span>
-                        <div id="nomePlaca" class="info-value-main">Nome do Recebedor</div>
+        <div class="stage">
+            <span class="crop tl"></span>
+            <span class="crop tr"></span>
+            <span class="crop bl"></span>
+            <span class="crop br"></span>
+
+            <div id="placa" class="placa">
+
+                <div class="placa-header">
+                    <div class="pix-word">
+                        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
                     </div>
+                    <span class="header-tag">Pagamento instantâneo</span>
+                </div>
 
-                    <div id="bancoContainer" class="info-block">
-                        <span class="info-label">Instituição Financeira</span>
-                        <div id="bancoPlaca" class="info-value-sub">Sua Instituição</div>
-                    </div>
+                <div class="placa-body">
+                    <div class="info-group">
 
-                    <div class="info-block">
-                        <div class="key-badge">
-                            <span class="info-label" id="tipoPlaca">Chave PIX • E-mail</span>
-                            <div id="chavePlaca" class="key-text">sua-chave@email.com</div>
+                        <div class="info-block">
+                            <span class="info-label">Recebedor</span>
+                            <div id="nomePlaca" class="info-value-main">Nome do recebedor</div>
                         </div>
+
+                        <div id="bancoContainer" class="info-block">
+                            <span class="info-label">Instituição financeira</span>
+                            <div id="bancoPlaca" class="info-value-sub">Sua instituição</div>
+                        </div>
+
+                        <div class="info-block">
+                            <div class="key-badge">
+                                <span class="info-label" id="tipoPlaca">Chave PIX · E-mail</span>
+                                <div id="chavePlaca" class="key-text">sua-chave@email.com</div>
+                            </div>
+                        </div>
+
                     </div>
 
+                    <div class="qr-container">
+                        <div id="qrcode"></div>
+                        <div class="qr-instruction">Aponte a câmera para pagar</div>
+                    </div>
                 </div>
 
-                <!-- QR CODE -->
-                <div class="qr-container">
-                    <div id="qrcode"></div>
-                    <div class="qr-instruction">Aponte a câmera para pagar</div>
+                <div class="placa-footer">
+                    PAGUE COM SEGURANÇA PELO SEU APP BANCÁRIO
                 </div>
-            </div>
 
-            <!-- RODAPÉ DA PLACA (TEXTO ATUALIZADO E ENXUTO) -->
-            <div class="placa-footer">
-                PAGUE COM SEGURANÇA PELO SEU APP BANCÁRIO
             </div>
-
         </div>
     </div>
 
 </div>
 
+<footer class="site-footer">
+    © 2026 — Desenvolvido com IA por <a href="https://wa.me/+5574991162482" target="_blank" rel="noopener noreferrer">Rangel Viana</a>
+</footer>
+
 <script>
 let payloadPixGlobal = "";
 
-// Elementos do DOM
 const selectTipo = document.getElementById("tipo");
 const inputChave = document.getElementById("chave");
+const pageStyleTag = document.getElementById("pageStyle");
+const printTagFormat = document.getElementById("printTagFormat");
+const printTagSize = document.getElementById("printTagSize");
 
 function normalizarTexto(texto) {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
@@ -590,14 +780,16 @@ function gerarPayload(chave, nome) {
     return payload + calcularCRC16(payload);
 }
 
-function atualizarPlaca() {
+function atualizarPlaca(mostrarErro = true) {
     const nome = document.getElementById("nome").value.trim();
     const banco = document.getElementById("banco").value.trim();
     const tipo = selectTipo.value;
     const chaveDigitada = inputChave.value.trim();
 
     if (!nome || !chaveDigitada) {
-        alert("Por favor, preencha o Nome e a Chave PIX.");
+        if (mostrarErro) {
+            alert("Por favor, preencha o Nome e a Chave PIX.");
+        }
         return;
     }
 
@@ -611,19 +803,15 @@ function atualizarPlaca() {
         bancoContainer.style.display = "none";
     }
 
-    document.getElementById("tipoPlaca").textContent = "Chave PIX • " + tipo;
-    
-    // Exibe exatamente o que foi digitado no card visual
+    document.getElementById("tipoPlaca").textContent = "Chave PIX · " + tipo;
     document.getElementById("chavePlaca").textContent = chaveDigitada;
 
-    // Prepara a chave do QR Code (se for CELULAR, garante o +55 internamente)
     let chaveQrCode = chaveDigitada;
     if (tipo === "CELULAR") {
         const apenasNumeros = chaveDigitada.replace(/\D/g, "");
         chaveQrCode = "+55" + apenasNumeros;
     }
 
-    // Gera o código PIX usando a chave tratada com +55
     payloadPixGlobal = gerarPayload(chaveQrCode, nome);
 
     const qrcodeDiv = document.getElementById("qrcode");
@@ -646,61 +834,52 @@ function definirFormato(formato) {
         placa.classList.add("vertical");
         btnVert.classList.add("active");
         btnHoriz.classList.remove("active");
+        pageStyleTag.textContent = "@page { size: A5 portrait; margin: 0; }";
+        printTagFormat.textContent = "Vertical";
+        printTagSize.textContent = "148 × 210 mm · A5";
     } else {
         placa.classList.remove("vertical");
         btnHoriz.classList.add("active");
         btnVert.classList.remove("active");
+        pageStyleTag.textContent = "@page { size: A5 landscape; margin: 0; }";
+        printTagFormat.textContent = "Horizontal";
+        printTagSize.textContent = "210 × 148 mm · A5";
     }
 }
 
 function baixarImagem() {
     const placa = document.getElementById("placa");
+    const ehVertical = placa.classList.contains("vertical");
+
+    // Resolução fixa de alta qualidade (300 DPI em A5), independente do
+    // tamanho de tela em que a pré-visualização está sendo exibida.
+    const DPI = 300;
+    const larguraAlvoMM = ehVertical ? 148 : 210;
+    const alturaAlvoMM = ehVertical ? 210 : 148;
+    const larguraAlvoPx = Math.round((larguraAlvoMM / 25.4) * DPI);
+
+    const larguraAtualPx = placa.getBoundingClientRect().width;
+    const fatorEscala = larguraAlvoPx / larguraAtualPx;
 
     html2canvas(placa, {
-        scale: 5,
-        dpi: 300,
-        backgroundColor: null,
+        scale: fatorEscala,
+        backgroundColor: "#ffffff",
         useCORS: true,
-        allowTaint: true,
+        allowTaint: false,
         logging: false,
-        imageTimeout: 0
+        imageTimeout: 15000
     }).then(canvas => {
         const a = document.createElement("a");
         a.download = "placa-pix.png";
         a.href = canvas.toDataURL("image/png", 1.0);
         a.click();
+    }).catch(erro => {
+        console.error("Erro ao gerar imagem:", erro);
+        alert("Não foi possível baixar a imagem. Verifique se o arquivo logo.png está na mesma pasta do index.html e tente novamente.");
     });
 }
 
-/* SUPORTE A PWA & OFFLINE */
-let deferredPrompt;
-const btnInstall = document.getElementById('btnInstall');
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('SW Registrado com sucesso!'))
-            .catch(err => console.log('Erro ao registrar SW:', err));
-    });
-}
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (btnInstall) btnInstall.style.display = 'flex';
-});
-
-function instalarApp() {
-    if (!deferredPrompt) return;
-    
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-            if (btnInstall) btnInstall.style.display = 'none';
-        }
-        deferredPrompt = null;
-    });
-}
+atualizarPlaca(false);
 </script>
 
 </body>
