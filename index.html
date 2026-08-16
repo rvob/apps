@@ -10,7 +10,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -37,7 +37,7 @@ body {
     font-family: 'Poppins', sans-serif;
     color: var(--text);
     background: radial-gradient(circle at 15% 0%, #10312C 0%, #08090d 45%);
-    padding: 28px 18px 20px;
+    padding: 22px 18px 20px;
     overflow-x: hidden;
 }
 
@@ -50,21 +50,7 @@ body {
 /* CABEÇALHO */
 header {
     text-align: center;
-    margin-bottom: 32px;
-}
-
-.logo {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 58px;
-    height: 58px;
-    margin-bottom: 12px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, #22B8A3, #086F5F);
-    box-shadow: 0 8px 25px rgba(34, 184, 163, .35);
-    font-size: 24px;
-    animation: logoFloat 4s ease-in-out infinite;
+    margin-bottom: 22px;
 }
 
 h1 {
@@ -259,11 +245,6 @@ footer a:hover {
 }
 
 /* ANIMAÇÕES */
-@keyframes logoFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-}
-
 @keyframes cardIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -298,9 +279,6 @@ footer a:hover {
 <div class="container">
 
 <header>
-    <div class="logo">
-        <i class="fa-solid fa-cloud-arrow-down"></i>
-    </div>
     <h1>Central de Aplicativos</h1>
     <p class="subtitle">Apps <span>atualizados</span> para seus dispositivos</p>
 </header>
