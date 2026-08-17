@@ -13,12 +13,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Links M3U" />
 
-<link rel="icon" type="image/svg+xml" href="/m3u/favicon.svg?v=3">
-<link rel="alternate icon" href="/m3u/icon-192.png">
-<link rel="apple-touch-icon" href="/m3u/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="/m3u/favicon.svg">
 
 <!-- Manifest PWA -->
-<link rel="manifest" href="manifest.json" />
+<link rel="manifest" href="/m3u/manifest.json" />
 
 <!-- Fonts e ícones -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -656,7 +654,7 @@
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('/m3u/sw.js')
           .then(() => console.log('Service Worker registrado com sucesso'))
           .catch(err => console.log('Erro ao registrar Service Worker:', err));
       });
