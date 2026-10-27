@@ -4,10 +4,9 @@
   "ndd": "2099-12-31",
   "rtv": {
     "servidores": [
-      { "nome": "Servidor 01", "dns": "http://clubneymar.com" },
+      { "nome": "Servidor 01", "dns": "http://clubneymar.cm" },
       { "nome": "Servidor 02", "dns": "http://ftspl26.com" }
     ],
-    "aviso": "Informamos que os hosts acima foram bloqueados pelo Cloudflare.
-Recomendamos que não utilizem esses hosts nos seus clientes. Caso algum cliente utilize, por favor, troque para outro host."
+    "aviso": "servidor off, aguardar normalização."
   }
 }
