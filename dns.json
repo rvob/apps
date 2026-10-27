@@ -1,5 +1,11 @@
 {
   "status": "true",
   "su": "http://clubneymar.com",
-  "ndd": "2099-12-31"
+  "ndd": "2099-12-31",
+  "rtv": {
+    "servidores": [
+      { "nome": "Servidor 01", "dns": "http://clubneymar.com" },
+      { "nome": "Servidor 02", "dns": "http://ftspl26.com" }
+    ]
+  }
 }
