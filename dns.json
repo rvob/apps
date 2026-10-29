@@ -4,8 +4,8 @@
   "ndd": "2099-12-31",
   "rtv": {
     "servidores": [
-      { "nome": "Servidor 01", "dns": "http://clubneymar.com" },
-      { "nome": "Servidor 02", "dns": "http://ftspl26.com" }
+      { "nome": "Servidor 01", "dns": "http://ftspl26.com" },
+      { "nome": "Servidor 02", "dns": "http://clubneymar.com" }
     ],
     "aviso": "Teste avisos."
   }
