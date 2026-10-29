@@ -7,6 +7,6 @@
       { "nome": "Servidor 01", "dns": "http://clubneymar.com" },
       { "nome": "Servidor 02", "dns": "http://ftspl26.com" }
     ],
-    "aviso": "app em fase de testes. erros encontrados enviar para suporte 74 99116-2482."
+    "aviso": "caso de erro de login, saia da conta e entre novamente, atráves das configurações."
   }
 }
