@@ -7,6 +7,7 @@
       { "nome": "Servidor 01", "dns": "http://clubneymar.com" },
       { "nome": "Servidor 02", "dns": "http://ftspl26.com" }
     ],
-    "aviso": "caso de erro de login, saia da conta e entre novamente, atráves das configurações."
+    "aviso": "⚠️ Aviso: fase de testes
+Este aplicativo ainda está em fase de testes e podem ocorrer erros. Se encontrar algum problema, entre em contato com o suporte pelo telefone (74) 99116-2482."
   }
 }
