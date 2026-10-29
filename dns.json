@@ -7,6 +7,6 @@
       { "nome": "Servidor 01", "dns": "http://clubneymar.com" },
       { "nome": "Servidor 02", "dns": "http://ftspl26.com" }
     ],
-    "aviso": "⚠️ atualize sua versão do app."
+    "aviso": "⚠️ atualize <a href="dados.json" target="_blank">Abrir JSON</a> versão do app."
   }
 }
