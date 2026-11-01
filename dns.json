@@ -4,9 +4,10 @@
   "ndd": "2099-12-31",
   "rtv": {
     "servidores": [
-      { "nome": "Servidor 01", "dns": "http://clubneymar.com" },
-      { "nome": "Servidor 02", "dns": "http://ftspl26.com" }
+      { "nome": "Servidor A1", "painel": "A", "dns": "http://clubneymar.com" },
+      { "nome": "Servidor A2", "painel": "A", "dns": "http://8yca8t.live" },
+      { "nome": "Servidor B1", "painel": "B", "dns": "http://..." }
     ],
-    "aviso": "⚠️ atualize versão do app."
+    "aviso": "abcdefghijklmnopq"
   }
 }
