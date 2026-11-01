@@ -1,12 +1,12 @@
 {
   "status": "true",
-  "su": "http://8yca8t.live",
+  "su": "http://clubneymar.com",
   "ndd": "2099-12-31",
   "rtv": {
     "servidores": [
       { "nome": "Servidor A1", "painel": "A", "dns": "http://clubneymar.com" },
-      { "nome": "Servidor A2", "painel": "A", "dns": "http://misterclub25.com" },
-      { "nome": "Servidor A3", "painel": "A", "dns": "http://doctorclub25.com" },
+      { "nome": "Servidor A2", "painel": "A", "dns": "http://prtas3.me" },
+      { "nome": "Servidor A3", "painel": "A", "dns": "http://guiner.vip" },
       { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" }
     ],
     "aviso": "⚠️ App em fase de testes • Pode haver instabilidades"
