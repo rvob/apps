@@ -9,6 +9,9 @@
       { "nome": "Servidor A3", "painel": "A", "dns": "http://guiner.vip" },
       { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" }
     ],
+    "epg": [
+      { "nome": "EPG alternativo", "url": "http://epg.ftspl26.com" }
+    ],
     "aviso": "⚠️ App em fase de testes • Pode haver instabilidades"
   }
 }
