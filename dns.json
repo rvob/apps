@@ -9,9 +9,10 @@
       { "nome": "Servidor A3", "painel": "A", "dns": "http://fclub.vip" },
       { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" }
     ],
-    "epg": [
-      { "nome": "EPG alternativo", "url": "http://epg.ftspl26.com" }
-    ],
+"epg": [
+  { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
+  { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
+],
     "aviso": "⚠️ App em fase de testes • Pode haver instabilidades"
   }
 }
