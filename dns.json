@@ -11,6 +11,6 @@
       { "nome": "Servidor A5", "painel": "A", "dns": "http://phn35.xyz" },
       { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" }
     ],
-    "aviso": "abcdefghijklmnopq"
+    "aviso": "⚠️ App em fase de testes • Pode haver instabilidades"
   }
 }
