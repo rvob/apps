@@ -13,6 +13,6 @@
   { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
   { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
 ],
-    "aviso": "⚠️ App em fase de testes • Pode haver instabilidades 74 99116-2482"
+    "aviso": "⚠️ Em fase de testes"
   }
 }
