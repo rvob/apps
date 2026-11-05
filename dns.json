@@ -19,7 +19,7 @@
       { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
       { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
     ],
-    "avisos": { "A": "club", "B": "fastapp", "C": "" },
+    "avisos": { "A": "", "B": "", "C": "" },
     "aviso": ""
   }
 }
