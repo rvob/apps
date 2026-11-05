@@ -8,12 +8,18 @@
       { "nome": "Servidor A2", "painel": "A", "dns": "http://prtas3.me" },
       { "nome": "Servidor A3", "painel": "A", "dns": "http://cudcue.art" },
       { "nome": "Servidor A4", "painel": "A", "dns": "http://clubthief.me" },
-      { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" }
+      { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" },
+      { "nome": "Servidor B2", "painel": "B", "dns": "" },
+      { "nome": "Servidor B3", "painel": "B", "dns": "" },
+      { "nome": "Servidor C1", "painel": "C", "dns": "" },
+      { "nome": "Servidor C2", "painel": "C", "dns": "" },
+      { "nome": "Servidor C3", "painel": "C", "dns": "" }
     ],
-"epg": [
-  { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
-  { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
-],
+    "epg": [
+      { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
+      { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
+    ],
+    "avisos": { "A": "club", "B": "fastapp", "C": "" },
     "aviso": ""
   }
 }
