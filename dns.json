@@ -5,9 +5,8 @@
   "rtv": {
     "servidores": [
       { "nome": "Servidor A1", "painel": "A", "dns": "http://clubneymar.com" },
-      { "nome": "Servidor A2", "painel": "A", "dns": "http://prtas3.me" },
-      { "nome": "Servidor A3", "painel": "A", "dns": "http://8yca8t.live" },
-      { "nome": "Servidor A4", "painel": "A", "dns": "http://phn35.xyz" },
+      { "nome": "Servidor A2", "painel": "A", "dns": "http://uabckiac.com" },
+      { "nome": "Servidor A3", "painel": "A", "dns": "http://ueropqe.com" },
       { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" },
       { "nome": "Servidor B2", "painel": "B", "dns": "" },
       { "nome": "Servidor B3", "painel": "B", "dns": "" },
@@ -19,7 +18,7 @@
       { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
       { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
     ],
-    "avisos": { "A": "", "B": "", "C": "" },
+    "avisos": { "A": "Servidor A1 em manutenção. Use o A2 ou o A3 em Configurações. Avisaremos quando voltar ao normal.", "B": "", "C": "" },
     "aviso": ""
   }
 }
