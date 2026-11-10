@@ -18,7 +18,7 @@
       { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
       { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
     ],
-    "avisos": { "A": "Servidor A1 em manutenção. Use o A2 ou o A3 em Configurações. Avisaremos quando voltar ao normal.", "B": "", "C": "" },
+    "avisos": { "A": "Servidor A1 com problemas. Vá em Configurações, toque em Servidor e escolha A2 ou A3.", "B": "", "C": "" },
     "aviso": ""
   }
 }
