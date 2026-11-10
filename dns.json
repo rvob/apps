@@ -19,6 +19,6 @@
       { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
     ],
     "avisos": { "A": "Servidor A1 com problemas. Vá em Configurações, toque em Servidor e escolha A2 ou A3.", "B": "", "C": "" },
-    "aviso": ""
+    "aviso": "Servidor A1 com problemas. Vá em Configurações, toque em Servidor e escolha A2 ou A3."
   }
 }
