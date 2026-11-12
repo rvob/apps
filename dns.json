@@ -1,12 +1,12 @@
 {
   "status": "true",
-  "su": "http://kimuca45.xyz",
+  "su": "http://clubdns.site",
   "ndd": "2099-12-31",
   "rtv": {
     "servidores": [
       { "nome": "Servidor A1", "painel": "A", "dns": "http://kimuca45.xyz" },
-      { "nome": "Servidor A2", "painel": "A", "dns": "http://uabckiac.com" },
-      { "nome": "Servidor A3", "painel": "A", "dns": "http://ueropqe.com" },
+      { "nome": "Servidor A2", "painel": "A", "dns": "http://clubdns.site" },
+      { "nome": "Servidor A3", "painel": "A", "dns": "http://uabckiac.com" },
       { "nome": "Servidor B1", "painel": "B", "dns": "http://ftspl26.com" },
       { "nome": "Servidor B2", "painel": "B", "dns": "" },
       { "nome": "Servidor B3", "painel": "B", "dns": "" },
