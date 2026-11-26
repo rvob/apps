@@ -18,7 +18,7 @@
       { "nome": "BrazilTV", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/epg.xml" },
       { "nome": "BrazilTV Claro", "url": "https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/claro.xml" }
     ],
-    "avisos": { "A": "Nova versão do RTV Play disponível! Atualize em Configurações › Atualizar app para ter mais estabilidade e correções.", "B": "Nova versão do RTV Play disponível! Atualize em Configurações › Atualizar app para ter mais estabilidade e correções.", "C": "" },
-    "aviso": "Nova versão do RTV Play disponível! Atualize em Configurações › Atualizar app para ter mais estabilidade e correções."
+    "avisos": { "A": "Nova versão disponível! Atualize em Configurações › Atualizar app.", "B": "Nova versão disponível! Atualize em Configurações › Atualizar app.", "C": "" },
+    "aviso": "Nova versão disponível! Atualize em Configurações › Atualizar app."
   }
 }
